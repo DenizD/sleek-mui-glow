@@ -33,7 +33,7 @@ const MuiMonthlyOverview = () => {
       clipsUploaded: 5,
       status: "Überschritten um 1.540",
       statusColor: "error" as const,
-      statusValue: 254, // Prozent
+      statusValue: 254,
       bgColor: '#FEF2F2'
     },
     {
@@ -221,7 +221,7 @@ const MuiMonthlyOverview = () => {
                 <TableCell align="right" sx={{ fontWeight: 600, color: '#25242E', fontFamily: 'Inter, sans-serif' }}>
                   Status
                 </TableCell>
-              </tr>
+              </TableRow>
             </TableHead>
             <TableBody>
               {sortedData.map((row, index) => (
