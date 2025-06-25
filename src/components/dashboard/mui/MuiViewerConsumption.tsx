@@ -9,7 +9,6 @@ import {
   Tooltip,
   Chip,
   Alert,
-  Button,
   Switch,
   FormControlLabel
 } from '@mui/material';
@@ -124,17 +123,17 @@ const MuiViewerConsumption = () => {
       sx={{ 
         backgroundColor: '#FFFFFF',
         border: '1px solid #E8EAF0',
-        borderRadius: '20px',
+        borderRadius: '24px',
         overflow: 'hidden',
         position: 'relative',
-        minHeight: '600px'
+        minHeight: '700px'
       }}
     >
       {/* Scenario Switcher */}
       <Box sx={{
         position: 'absolute',
-        top: 16,
-        left: 16,
+        top: 20,
+        left: 20,
         zIndex: 2
       }}>
         <FormControlLabel
@@ -146,7 +145,15 @@ const MuiViewerConsumption = () => {
             />
           }
           label={
-            <Typography variant="caption" sx={{ fontSize: '0.75rem', color: '#64748B' }}>
+            <Typography 
+              variant="caption" 
+              sx={{ 
+                fontSize: '0.8rem', 
+                color: '#64748B',
+                fontFamily: 'Inter, sans-serif',
+                fontWeight: 500
+              }}
+            >
               {isExceededScenario ? 'Exceeded Scenario' : 'Within Limits'}
             </Typography>
           }
@@ -156,20 +163,21 @@ const MuiViewerConsumption = () => {
       {/* Premium Badge */}
       <Box sx={{
         position: 'absolute',
-        top: 16,
-        right: 16,
+        top: 20,
+        right: 20,
         zIndex: 1
       }}>
         <Chip
-          icon={<FontAwesomeIcon icon={faCrown} style={{ fontSize: '12px' }} />}
+          icon={<FontAwesomeIcon icon={faCrown} style={{ fontSize: '14px' }} />}
           label={planDetails.name}
           sx={{
             backgroundColor: badgeColors.bg,
             color: badgeColors.color,
             border: `1px solid ${badgeColors.border}`,
             fontWeight: 600,
-            fontSize: '0.75rem',
-            height: '32px'
+            fontSize: '0.8rem',
+            height: '36px',
+            fontFamily: 'Inter, sans-serif'
           }}
         />
       </Box>
@@ -177,23 +185,23 @@ const MuiViewerConsumption = () => {
       <CardContent sx={{ p: 0 }}>
         {/* Header */}
         <Box sx={{ 
-          px: 5, 
-          pt: 5, 
-          pb: 4,
+          px: 6, 
+          pt: 6, 
+          pb: 5,
           background: 'linear-gradient(135deg, #F8FAFC 0%, #F1F5F9 100%)',
           borderBottom: '1px solid #E2E8F0'
         }}>
           <Box sx={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
             <Box>
               <Typography 
-                variant="h4" 
+                variant="h3" 
                 sx={{ 
                   fontWeight: 700, 
                   color: '#1A1A1A',
-                  fontSize: '2rem',
+                  fontSize: '2.5rem',
                   letterSpacing: '-0.02em',
                   fontFamily: 'Inter, sans-serif',
-                  mb: 1
+                  mb: 1.5
                 }}
               >
                 Plan & Viewer Consumption
@@ -202,8 +210,9 @@ const MuiViewerConsumption = () => {
                 variant="body1" 
                 sx={{ 
                   color: '#64748B',
-                  fontSize: '1rem',
-                  fontFamily: 'Inter, sans-serif'
+                  fontSize: '1.1rem',
+                  fontFamily: 'Inter, sans-serif',
+                  fontWeight: 400
                 }}
               >
                 Overview of your plan and monthly consumption
@@ -213,37 +222,37 @@ const MuiViewerConsumption = () => {
         </Box>
 
         {/* Metrics Grid */}
-        <Box sx={{ px: 5, py: 5 }}>
+        <Box sx={{ px: 6, py: 6 }}>
           <Box sx={{ 
             display: 'grid', 
             gridTemplateColumns: 'repeat(4, 1fr)', 
-            gap: 4,
-            mb: 5
+            gap: 5,
+            mb: 6
           }}>
             {metrics.map((metric, index) => (
               <Tooltip key={index} title={metric.tooltip} placement="top">
                 <Box sx={{ 
                   textAlign: 'center',
-                  p: 4,
-                  borderRadius: 4,
+                  p: 5,
+                  borderRadius: 5,
                   backgroundColor: '#F8FAFC',
                   border: '1px solid #E2E8F0',
                   cursor: 'pointer',
-                  transition: 'all 0.2s ease',
-                  minHeight: '140px',
+                  transition: 'all 0.3s ease',
+                  minHeight: '160px',
                   display: 'flex',
                   flexDirection: 'column',
                   justifyContent: 'center',
                   '&:hover': {
-                    transform: 'translateY(-4px)',
-                    boxShadow: '0 12px 30px #64748B15'
+                    transform: 'translateY(-6px)',
+                    boxShadow: '0 16px 40px #64748B20'
                   }
                 }}>
-                  <Box sx={{ display: 'flex', alignItems: 'center', justifyContent: 'center', gap: 1, mb: 2 }}>
+                  <Box sx={{ display: 'flex', alignItems: 'center', justifyContent: 'center', gap: 1.5, mb: 2.5 }}>
                     <FontAwesomeIcon 
                       icon={metric.icon} 
                       style={{ 
-                        fontSize: '18px', 
+                        fontSize: '20px', 
                         color: metric.iconColor
                       }} 
                     />
@@ -251,23 +260,25 @@ const MuiViewerConsumption = () => {
                       variant="body1" 
                       sx={{ 
                         color: '#64748B',
-                        fontSize: '1rem',
+                        fontSize: '1.1rem',
                         fontWeight: 600,
-                        textTransform: 'none'
+                        textTransform: 'none',
+                        fontFamily: 'Inter, sans-serif'
                       }}
                     >
                       {metric.title}
                     </Typography>
                   </Box>
                   <Typography 
-                    variant="h2" 
+                    variant="h1" 
                     sx={{ 
                       fontWeight: 800,
                       color: '#1A1A1A',
-                      fontSize: index === 0 ? '1.75rem' : '3rem',
+                      fontSize: index === 0 ? '2rem' : '3.5rem',
                       lineHeight: 1,
-                      mb: 1.5,
-                      letterSpacing: '-0.03em'
+                      mb: 2,
+                      letterSpacing: '-0.03em',
+                      fontFamily: 'Inter, sans-serif'
                     }}
                   >
                     {metric.value}
@@ -276,8 +287,9 @@ const MuiViewerConsumption = () => {
                     variant="body2" 
                     sx={{ 
                       color: '#9CA3AF',
-                      fontSize: '0.875rem',
-                      fontWeight: 500
+                      fontSize: '0.95rem',
+                      fontWeight: 500,
+                      fontFamily: 'Inter, sans-serif'
                     }}
                   >
                     {metric.subtitle}
@@ -289,11 +301,11 @@ const MuiViewerConsumption = () => {
 
           {/* Inclusive Volume Progress */}
           <Typography 
-            variant="h6" 
+            variant="h5" 
             sx={{ 
               color: '#1A1A1A', 
-              mb: 4, 
-              fontSize: '1.25rem', 
+              mb: 5, 
+              fontSize: '1.5rem', 
               fontWeight: 600,
               fontFamily: 'Inter, sans-serif'
             }}
@@ -301,16 +313,16 @@ const MuiViewerConsumption = () => {
             Inclusive Volume Usage
           </Typography>
           
-          <Box sx={{ position: 'relative', mb: 4 }}>
+          <Box sx={{ position: 'relative', mb: 5 }}>
             <LinearProgress
               variant="determinate"
               value={inclusiveUsagePercentage}
               sx={{
-                height: 16,
-                borderRadius: 8,
+                height: 20,
+                borderRadius: 10,
                 backgroundColor: '#F3F4F6',
                 '& .MuiLinearProgress-bar': {
-                  borderRadius: 8,
+                  borderRadius: 10,
                   background: inclusiveUsagePercentage >= 100 
                     ? 'linear-gradient(90deg, #F59E0B 0%, #D97706 100%)'
                     : 'linear-gradient(90deg, #3890C5 0%, #43BEAC 100%)',
@@ -318,27 +330,44 @@ const MuiViewerConsumption = () => {
               }}
             />
             <Typography
-              variant="body2"
+              variant="body1"
               sx={{
                 position: 'absolute',
                 top: '50%',
                 left: '50%',
                 transform: 'translate(-50%, -50%)',
                 color: 'white',
-                fontWeight: 600,
-                fontSize: '0.75rem',
-                textShadow: '0 1px 2px rgba(0,0,0,0.5)'
+                fontWeight: 700,
+                fontSize: '0.9rem',
+                textShadow: '0 2px 4px rgba(0,0,0,0.6)',
+                fontFamily: 'Inter, sans-serif'
               }}
             >
               {Math.round(inclusiveUsagePercentage)}%
             </Typography>
           </Box>
 
-          <Box sx={{ display: 'flex', justifyContent: 'space-between', mb: 4 }}>
-            <Typography variant="body2" sx={{ color: '#9CA3AF', fontSize: '0.875rem' }}>
+          <Box sx={{ display: 'flex', justifyContent: 'space-between', mb: 5 }}>
+            <Typography 
+              variant="body2" 
+              sx={{ 
+                color: '#9CA3AF', 
+                fontSize: '0.95rem',
+                fontFamily: 'Inter, sans-serif',
+                fontWeight: 500
+              }}
+            >
               0 Viewers
             </Typography>
-            <Typography variant="body2" sx={{ color: '#9CA3AF', fontSize: '0.875rem' }}>
+            <Typography 
+              variant="body2" 
+              sx={{ 
+                color: '#9CA3AF', 
+                fontSize: '0.95rem',
+                fontFamily: 'Inter, sans-serif',
+                fontWeight: 500
+              }}
+            >
               {packageVolume.toLocaleString()} Viewers (Inclusive Max)
             </Typography>
           </Box>
@@ -351,17 +380,34 @@ const MuiViewerConsumption = () => {
               backgroundColor: currentScenario.alertColors.backgroundColor,
               borderColor: currentScenario.alertColors.borderColor,
               color: currentScenario.alertColors.color,
-              padding: '16px 20px',
-              borderRadius: '12px',
+              padding: '20px 24px',
+              borderRadius: '16px',
+              fontSize: '1rem',
               '& .MuiAlert-icon': {
-                color: currentScenario.alertColors.iconColor
+                color: currentScenario.alertColors.iconColor,
+                fontSize: '1.2rem'
               }
             }}
           >
-            <Typography variant="body1" sx={{ fontWeight: 600, mb: 1, fontSize: '1rem' }}>
+            <Typography 
+              variant="h6" 
+              sx={{ 
+                fontWeight: 600, 
+                mb: 1.5, 
+                fontSize: '1.1rem',
+                fontFamily: 'Inter, sans-serif'
+              }}
+            >
               {currentScenario.alertTitle}
             </Typography>
-            <Typography variant="body2" sx={{ fontSize: '0.875rem', lineHeight: 1.5 }}>
+            <Typography 
+              variant="body1" 
+              sx={{ 
+                fontSize: '0.95rem', 
+                lineHeight: 1.6,
+                fontFamily: 'Inter, sans-serif'
+              }}
+            >
               {currentScenario.alertDescription}
             </Typography>
           </Alert>

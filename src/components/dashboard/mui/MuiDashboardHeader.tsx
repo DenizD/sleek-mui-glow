@@ -38,7 +38,7 @@ const MuiDashboardHeader = () => {
           sx={{ 
             fontWeight: 700, 
             color: '#25242E',
-            fontFamily: 'Inter, sans-serif'
+            fontFamily: '"Inter", sans-serif'
           }}
         >
           Consumption
@@ -55,19 +55,30 @@ const MuiDashboardHeader = () => {
               sx={{
                 minWidth: 100,
                 backgroundColor: 'white',
+                fontFamily: '"Inter", sans-serif',
                 '& .MuiOutlinedInput-notchedOutline': {
                   borderColor: '#E0E0E0',
                 },
+                '& .MuiSelect-select': {
+                  fontFamily: '"Inter", sans-serif',
+                },
               }}
             >
-              <MenuItem value="en">English</MenuItem>
-              <MenuItem value="de">Deutsch</MenuItem>
+              <MenuItem value="en" sx={{ fontFamily: '"Inter", sans-serif' }}>English</MenuItem>
+              <MenuItem value="de" sx={{ fontFamily: '"Inter", sans-serif' }}>Deutsch</MenuItem>
             </Select>
           </FormControl>
         </Box>
         
         <Box sx={{ display: 'flex', alignItems: 'center', gap: 2 }}>
-          <Typography variant="body1" sx={{ fontWeight: 500, color: '#747474' }}>
+          <Typography 
+            variant="body1" 
+            sx={{ 
+              fontWeight: 500, 
+              color: '#747474',
+              fontFamily: '"Inter", sans-serif'
+            }}
+          >
             Month
           </Typography>
           <FormControl size="small">
@@ -77,14 +88,18 @@ const MuiDashboardHeader = () => {
               sx={{
                 minWidth: 160,
                 backgroundColor: 'white',
+                fontFamily: '"Inter", sans-serif',
                 '& .MuiOutlinedInput-notchedOutline': {
                   borderColor: '#E0E0E0',
                 },
+                '& .MuiSelect-select': {
+                  fontFamily: '"Inter", sans-serif',
+                },
               }}
             >
-              <MenuItem value="june-2025">June 2025</MenuItem>
-              <MenuItem value="may-2025">May 2025</MenuItem>
-              <MenuItem value="april-2025">April 2025</MenuItem>
+              <MenuItem value="june-2025" sx={{ fontFamily: '"Inter", sans-serif' }}>June 2025</MenuItem>
+              <MenuItem value="may-2025" sx={{ fontFamily: '"Inter", sans-serif' }}>May 2025</MenuItem>
+              <MenuItem value="april-2025" sx={{ fontFamily: '"Inter", sans-serif' }}>April 2025</MenuItem>
             </Select>
           </FormControl>
         </Box>
