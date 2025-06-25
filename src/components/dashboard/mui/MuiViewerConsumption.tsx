@@ -28,8 +28,11 @@ const MuiViewerConsumption = () => {
   const overage = Math.max(0, currentUsage - packageVolume);
   const costPerViewer = planDetails.pricePerViewer;
   const additionalCosts = overage * costPerViewer;
-  const usagePercentage = (currentUsage / packageVolume) * 100;
-  const percentageOfVolume = Math.round(usagePercentage);
+  
+  // Calculate remaining inclusive viewers or overage
+  const remainingInclusive = Math.max(0, packageVolume - currentUsage);
+  const usedInclusive = Math.min(currentUsage, packageVolume);
+  const inclusiveUsagePercentage = (usedInclusive / packageVolume) * 100;
 
   const getPlanBadgeColor = () => {
     switch (planDetails.name) {
@@ -62,7 +65,7 @@ const MuiViewerConsumption = () => {
     {
       title: "Current Usage", 
       value: currentUsage.toLocaleString(),
-      subtitle: `${percentageOfVolume}% of volume`,
+      subtitle: overage > 0 ? `+${overage.toLocaleString()} additional` : `${remainingInclusive.toLocaleString()} remaining`,
       tooltip: "Your current viewer usage this month",
       icon: faInfoCircle,
       iconColor: '#3890C5'
@@ -218,7 +221,7 @@ const MuiViewerConsumption = () => {
             ))}
           </Box>
 
-          {/* Usage Progress */}
+          {/* Inclusive Volume Progress */}
           <Typography 
             variant="body1" 
             sx={{ 
@@ -229,49 +232,25 @@ const MuiViewerConsumption = () => {
               fontFamily: 'Inter, sans-serif'
             }}
           >
-            Usage Progress
+            Inclusive Volume Usage
           </Typography>
           
           <Box sx={{ position: 'relative', mb: 3 }}>
             <LinearProgress
               variant="determinate"
-              value={Math.min(usagePercentage, 100)}
+              value={inclusiveUsagePercentage}
               sx={{
                 height: 12,
                 borderRadius: 6,
                 backgroundColor: '#F3F4F6',
                 '& .MuiLinearProgress-bar': {
                   borderRadius: 6,
-                  background: 'linear-gradient(90deg, #3890C5 0%, #43BEAC 100%)',
+                  background: inclusiveUsagePercentage >= 100 
+                    ? 'linear-gradient(90deg, #FF8E03 0%, #FF6B35 100%)' 
+                    : 'linear-gradient(90deg, #3890C5 0%, #43BEAC 100%)',
                 },
               }}
             />
-            {/* Limit Marker */}
-            <Box sx={{
-              position: 'absolute',
-              top: -2,
-              left: '100%',
-              transform: 'translateX(-50%)',
-              width: 2,
-              height: 16,
-              backgroundColor: '#374151',
-              zIndex: 2
-            }} />
-            <Typography 
-              variant="caption" 
-              sx={{ 
-                position: 'absolute',
-                top: -25,
-                left: '100%',
-                transform: 'translateX(-50%)',
-                fontSize: '0.7rem',
-                color: '#374151',
-                fontWeight: 600,
-                whiteSpace: 'nowrap'
-              }}
-            >
-              Inclusive Maximum
-            </Typography>
           </Box>
 
           <Box sx={{ display: 'flex', justifyContent: 'space-between', mb: 3 }}>
@@ -279,35 +258,31 @@ const MuiViewerConsumption = () => {
               0 Viewers
             </Typography>
             <Typography variant="caption" sx={{ color: '#9CA3AF', fontSize: '0.75rem' }}>
-              {packageVolume.toLocaleString()} Viewers
-            </Typography>
-            <Typography variant="caption" sx={{ color: '#3890C5', fontSize: '0.75rem', fontWeight: 600 }}>
-              {currentUsage.toLocaleString()} Viewers (current)
+              {packageVolume.toLocaleString()} Viewers (Inclusive Max)
             </Typography>
           </Box>
 
-          {/* Information Alert & Action Button */}
-          {overage > 0 && (
+          {/* Status Information */}
+          {overage > 0 ? (
             <Box sx={{ display: 'flex', flexDirection: 'column', gap: 3 }}>
               <Alert 
-                severity="info" 
+                severity="warning" 
                 icon={<FontAwesomeIcon icon={faInfoCircle} />}
                 sx={{ 
-                  backgroundColor: '#F0F9FF',
-                  borderColor: '#BAE6FD',
-                  color: '#0369A1',
+                  backgroundColor: '#FFF7ED',
+                  borderColor: '#FED7AA',
+                  color: '#C2410C',
                   '& .MuiAlert-icon': {
-                    color: '#0369A1'
+                    color: '#FF8E03'
                   }
                 }}
               >
                 <Typography variant="body2" sx={{ fontWeight: 600, mb: 0.5 }}>
-                  Additional viewer costs of €{additionalCosts.toFixed(2)}
+                  Usage-based pricing active: {overage.toLocaleString()} additional viewers
                 </Typography>
                 <Typography variant="caption" sx={{ fontSize: '0.75rem' }}>
-                  The costs for additional viewers are automatically charged via your 
-                  stored payment method. An upgrade to a larger plan might be more 
-                  cost-effective for your usage level.
+                  Your inclusive volume has been exceeded. Additional viewers are charged at €{costPerViewer.toFixed(2)} per viewer. 
+                  Total additional costs: €{additionalCosts.toFixed(2)}
                 </Typography>
               </Alert>
 
@@ -337,6 +312,27 @@ const MuiViewerConsumption = () => {
                 </Button>
               </Box>
             </Box>
+          ) : (
+            <Alert 
+              severity="success" 
+              icon={<FontAwesomeIcon icon={faCheckCircle} />}
+              sx={{ 
+                backgroundColor: '#F0FDF4',
+                borderColor: '#BBF7D0',
+                color: '#166534',
+                '& .MuiAlert-icon': {
+                  color: '#10B981'
+                }
+              }}
+            >
+              <Typography variant="body2" sx={{ fontWeight: 600, mb: 0.5 }}>
+                Within inclusive volume: {remainingInclusive.toLocaleString()} viewers remaining
+              </Typography>
+              <Typography variant="caption" sx={{ fontSize: '0.75rem' }}>
+                You're currently using {usedInclusive.toLocaleString()} of your {packageVolume.toLocaleString()} inclusive viewers. 
+                No additional charges apply.
+              </Typography>
+            </Alert>
           )}
         </Box>
       </CardContent>
