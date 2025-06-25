@@ -1,58 +1,20 @@
 
-import React, { useState } from 'react';
-import { 
-  Card, 
-  CardContent, 
-  Typography, 
-  Box, 
-  LinearProgress,
-  Tooltip,
-  Chip,
-  Alert,
-  Switch,
-  FormControlLabel
-} from '@mui/material';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faInfoCircle, faCheckCircle, faExclamationTriangle, faCrown } from '@fortawesome/free-solid-svg-icons';
+import React from 'react';
+import { Card, CardContent, Box } from '@mui/material';
+import { useScenarioData } from './hooks/useScenarioData';
+import { generateMetrics } from './utils/metricsUtils';
+import ScenarioSwitcher from './components/ScenarioSwitcher';
+import PlanBadge from './components/PlanBadge';
+import ConsumptionHeader from './components/ConsumptionHeader';
+import MetricsGrid from './components/MetricsGrid';
+import UsageProgress from './components/UsageProgress';
+import StatusAlert from './components/StatusAlert';
+import { PlanDetails } from './types/ViewerConsumptionTypes';
 
 const MuiViewerConsumption = () => {
-  const [isExceededScenario, setIsExceededScenario] = useState(false);
+  const { isExceededScenario, setIsExceededScenario, currentScenario } = useScenarioData();
 
-  // Scenario data
-  const scenarioData = {
-    withinLimits: {
-      currentUsage: 750,
-      usagePercentage: 75,
-      alertType: 'success' as const,
-      alertIcon: faCheckCircle,
-      alertTitle: 'Within inclusive volume: 250 viewers remaining',
-      alertDescription: 'You are currently using 750 of your 1,000 inclusive viewers. No additional charges apply.',
-      alertColors: {
-        backgroundColor: '#F0FDF4',
-        borderColor: '#BBF7D0',
-        color: '#166534',
-        iconColor: '#10B981'
-      }
-    },
-    exceeded: {
-      currentUsage: 1250,
-      usagePercentage: 125,
-      alertType: 'warning' as const,
-      alertIcon: faExclamationTriangle,
-      alertTitle: 'Inclusive volume exceeded: Usage-based pricing active',
-      alertDescription: 'You have used 1,250 viewers this month. 250 additional viewers beyond your inclusive volume will be charged at €0.10 per viewer.',
-      alertColors: {
-        backgroundColor: '#FFFBEB',
-        borderColor: '#FED7AA',
-        color: '#92400E',
-        iconColor: '#F59E0B'
-      }
-    }
-  };
-
-  const currentScenario = isExceededScenario ? scenarioData.exceeded : scenarioData.withinLimits;
-
-  const planDetails = {
+  const planDetails: PlanDetails = {
     name: "Starter Plan",
     inclusiveViewers: 1000,
     pricePerViewer: 0.10,
@@ -63,59 +25,13 @@ const MuiViewerConsumption = () => {
   const packageVolume = planDetails.inclusiveViewers;
   const currentUsage = planDetails.currentUsage;
   const overage = Math.max(0, currentUsage - packageVolume);
-  const costPerViewer = planDetails.pricePerViewer;
-  const additionalCosts = overage * costPerViewer;
+  const additionalCosts = overage * planDetails.pricePerViewer;
   
-  // Calculate remaining inclusive viewers or overage
   const remainingInclusive = Math.max(0, packageVolume - currentUsage);
   const usedInclusive = Math.min(currentUsage, packageVolume);
   const inclusiveUsagePercentage = Math.min((usedInclusive / packageVolume) * 100, 100);
 
-  const getPlanBadgeColor = () => {
-    switch (planDetails.name) {
-      case "Starter Plan": return { bg: '#E3F2FD', color: '#1976D2', border: '#BBDEFB' };
-      case "Pro Plan": return { bg: '#F3E5F5', color: '#7B1FA2', border: '#CE93D8' };
-      case "Enterprise Plan": return { bg: '#FFF3E0', color: '#F57C00', border: '#FFCC02' };
-      default: return { bg: '#F5F5F5', color: '#666', border: '#E0E0E0' };
-    }
-  };
-
-  const badgeColors = getPlanBadgeColor();
-
-  const metrics = [
-    {
-      title: "Current Plan",
-      value: planDetails.name,
-      subtitle: "subscribed package",
-      tooltip: "Your currently subscribed plan",
-      icon: faCrown,
-      iconColor: badgeColors.color
-    },
-    {
-      title: "Inclusive Viewers",
-      value: packageVolume.toLocaleString(),
-      subtitle: "included per month",
-      tooltip: "The number of viewers included in your current package",
-      icon: faCheckCircle,
-      iconColor: '#10B981'
-    },
-    {
-      title: "Current Usage", 
-      value: currentUsage.toLocaleString(),
-      subtitle: overage > 0 ? `+${overage.toLocaleString()} additional` : `${remainingInclusive.toLocaleString()} remaining`,
-      tooltip: "Your current viewer usage this month",
-      icon: faInfoCircle,
-      iconColor: '#3890C5'
-    },
-    {
-      title: "Additional Costs",
-      value: `€${additionalCosts.toFixed(2)}`,
-      subtitle: `€${costPerViewer.toFixed(2)}/viewer`,
-      tooltip: "Costs for additional viewers - automatically charged via your payment method",
-      icon: faInfoCircle,
-      iconColor: '#3890C5'
-    }
-  ];
+  const metrics = generateMetrics(planDetails, overage, remainingInclusive, additionalCosts);
 
   return (
     <Card 
@@ -129,288 +45,25 @@ const MuiViewerConsumption = () => {
         minHeight: '700px'
       }}
     >
-      {/* Scenario Switcher */}
-      <Box sx={{
-        position: 'absolute',
-        top: 20,
-        left: 20,
-        zIndex: 2
-      }}>
-        <FormControlLabel
-          control={
-            <Switch
-              checked={isExceededScenario}
-              onChange={(e) => setIsExceededScenario(e.target.checked)}
-              size="small"
-            />
-          }
-          label={
-            <Typography 
-              variant="caption" 
-              sx={{ 
-                fontSize: '0.8rem', 
-                color: '#64748B',
-                fontFamily: 'Inter, sans-serif',
-                fontWeight: 500
-              }}
-            >
-              {isExceededScenario ? 'Exceeded Scenario' : 'Within Limits'}
-            </Typography>
-          }
-        />
-      </Box>
+      <ScenarioSwitcher 
+        isExceededScenario={isExceededScenario}
+        onToggle={setIsExceededScenario}
+      />
 
-      {/* Premium Badge */}
-      <Box sx={{
-        position: 'absolute',
-        top: 20,
-        right: 20,
-        zIndex: 1
-      }}>
-        <Chip
-          icon={<FontAwesomeIcon icon={faCrown} style={{ fontSize: '14px' }} />}
-          label={planDetails.name}
-          sx={{
-            backgroundColor: badgeColors.bg,
-            color: badgeColors.color,
-            border: `1px solid ${badgeColors.border}`,
-            fontWeight: 600,
-            fontSize: '0.8rem',
-            height: '36px',
-            fontFamily: 'Inter, sans-serif'
-          }}
-        />
-      </Box>
+      <PlanBadge planName={planDetails.name} />
 
       <CardContent sx={{ p: 0 }}>
-        {/* Header */}
-        <Box sx={{ 
-          px: 6, 
-          pt: 6, 
-          pb: 5,
-          background: 'linear-gradient(135deg, #F8FAFC 0%, #F1F5F9 100%)',
-          borderBottom: '1px solid #E2E8F0'
-        }}>
-          <Box sx={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
-            <Box>
-              <Typography 
-                variant="h3" 
-                sx={{ 
-                  fontWeight: 700, 
-                  color: '#1A1A1A',
-                  fontSize: '2.5rem',
-                  letterSpacing: '-0.02em',
-                  fontFamily: 'Inter, sans-serif',
-                  mb: 1.5
-                }}
-              >
-                Plan & Viewer Consumption
-              </Typography>
-              <Typography 
-                variant="body1" 
-                sx={{ 
-                  color: '#64748B',
-                  fontSize: '1.1rem',
-                  fontFamily: 'Inter, sans-serif',
-                  fontWeight: 400
-                }}
-              >
-                Overview of your plan and monthly consumption
-              </Typography>
-            </Box>
-          </Box>
-        </Box>
+        <ConsumptionHeader />
 
-        {/* Metrics Grid */}
         <Box sx={{ px: 6, py: 6 }}>
-          <Box sx={{ 
-            display: 'grid', 
-            gridTemplateColumns: 'repeat(4, 1fr)', 
-            gap: 5,
-            mb: 6
-          }}>
-            {metrics.map((metric, index) => (
-              <Tooltip key={index} title={metric.tooltip} placement="top">
-                <Box sx={{ 
-                  textAlign: 'center',
-                  p: 5,
-                  borderRadius: 5,
-                  backgroundColor: '#F8FAFC',
-                  border: '1px solid #E2E8F0',
-                  cursor: 'pointer',
-                  transition: 'all 0.3s ease',
-                  minHeight: '160px',
-                  display: 'flex',
-                  flexDirection: 'column',
-                  justifyContent: 'center',
-                  '&:hover': {
-                    transform: 'translateY(-6px)',
-                    boxShadow: '0 16px 40px #64748B20'
-                  }
-                }}>
-                  <Box sx={{ display: 'flex', alignItems: 'center', justifyContent: 'center', gap: 1.5, mb: 2.5 }}>
-                    <FontAwesomeIcon 
-                      icon={metric.icon} 
-                      style={{ 
-                        fontSize: '20px', 
-                        color: metric.iconColor
-                      }} 
-                    />
-                    <Typography 
-                      variant="body1" 
-                      sx={{ 
-                        color: '#64748B',
-                        fontSize: '1.1rem',
-                        fontWeight: 600,
-                        textTransform: 'none',
-                        fontFamily: 'Inter, sans-serif'
-                      }}
-                    >
-                      {metric.title}
-                    </Typography>
-                  </Box>
-                  <Typography 
-                    variant="h1" 
-                    sx={{ 
-                      fontWeight: 800,
-                      color: '#1A1A1A',
-                      fontSize: index === 0 ? '2rem' : '3.5rem',
-                      lineHeight: 1,
-                      mb: 2,
-                      letterSpacing: '-0.03em',
-                      fontFamily: 'Inter, sans-serif'
-                    }}
-                  >
-                    {metric.value}
-                  </Typography>
-                  <Typography 
-                    variant="body2" 
-                    sx={{ 
-                      color: '#9CA3AF',
-                      fontSize: '0.95rem',
-                      fontWeight: 500,
-                      fontFamily: 'Inter, sans-serif'
-                    }}
-                  >
-                    {metric.subtitle}
-                  </Typography>
-                </Box>
-              </Tooltip>
-            ))}
-          </Box>
-
-          {/* Inclusive Volume Progress */}
-          <Typography 
-            variant="h5" 
-            sx={{ 
-              color: '#1A1A1A', 
-              mb: 5, 
-              fontSize: '1.5rem', 
-              fontWeight: 600,
-              fontFamily: 'Inter, sans-serif'
-            }}
-          >
-            Inclusive Volume Usage
-          </Typography>
+          <MetricsGrid metrics={metrics} />
           
-          <Box sx={{ position: 'relative', mb: 5 }}>
-            <LinearProgress
-              variant="determinate"
-              value={inclusiveUsagePercentage}
-              sx={{
-                height: 20,
-                borderRadius: 10,
-                backgroundColor: '#F3F4F6',
-                '& .MuiLinearProgress-bar': {
-                  borderRadius: 10,
-                  background: inclusiveUsagePercentage >= 100 
-                    ? 'linear-gradient(90deg, #F59E0B 0%, #D97706 100%)'
-                    : 'linear-gradient(90deg, #3890C5 0%, #43BEAC 100%)',
-                },
-              }}
-            />
-            <Typography
-              variant="body1"
-              sx={{
-                position: 'absolute',
-                top: '50%',
-                left: '50%',
-                transform: 'translate(-50%, -50%)',
-                color: 'white',
-                fontWeight: 700,
-                fontSize: '0.9rem',
-                textShadow: '0 2px 4px rgba(0,0,0,0.6)',
-                fontFamily: 'Inter, sans-serif'
-              }}
-            >
-              {Math.round(inclusiveUsagePercentage)}%
-            </Typography>
-          </Box>
+          <UsageProgress 
+            inclusiveUsagePercentage={inclusiveUsagePercentage}
+            packageVolume={packageVolume}
+          />
 
-          <Box sx={{ display: 'flex', justifyContent: 'space-between', mb: 5 }}>
-            <Typography 
-              variant="body2" 
-              sx={{ 
-                color: '#9CA3AF', 
-                fontSize: '0.95rem',
-                fontFamily: 'Inter, sans-serif',
-                fontWeight: 500
-              }}
-            >
-              0 Viewers
-            </Typography>
-            <Typography 
-              variant="body2" 
-              sx={{ 
-                color: '#9CA3AF', 
-                fontSize: '0.95rem',
-                fontFamily: 'Inter, sans-serif',
-                fontWeight: 500
-              }}
-            >
-              {packageVolume.toLocaleString()} Viewers (Inclusive Max)
-            </Typography>
-          </Box>
-
-          {/* Status Information */}
-          <Alert 
-            severity={currentScenario.alertType}
-            icon={<FontAwesomeIcon icon={currentScenario.alertIcon} />}
-            sx={{ 
-              backgroundColor: currentScenario.alertColors.backgroundColor,
-              borderColor: currentScenario.alertColors.borderColor,
-              color: currentScenario.alertColors.color,
-              padding: '20px 24px',
-              borderRadius: '16px',
-              fontSize: '1rem',
-              '& .MuiAlert-icon': {
-                color: currentScenario.alertColors.iconColor,
-                fontSize: '1.2rem'
-              }
-            }}
-          >
-            <Typography 
-              variant="h6" 
-              sx={{ 
-                fontWeight: 600, 
-                mb: 1.5, 
-                fontSize: '1.1rem',
-                fontFamily: 'Inter, sans-serif'
-              }}
-            >
-              {currentScenario.alertTitle}
-            </Typography>
-            <Typography 
-              variant="body1" 
-              sx={{ 
-                fontSize: '0.95rem', 
-                lineHeight: 1.6,
-                fontFamily: 'Inter, sans-serif'
-              }}
-            >
-              {currentScenario.alertDescription}
-            </Typography>
-          </Alert>
+          <StatusAlert scenario={currentScenario} />
         </Box>
       </CardContent>
     </Card>
