@@ -5,12 +5,8 @@ import {
   CardContent, 
   Typography, 
   Box, 
-  LinearProgress,
-  Button,
-  Divider
+  LinearProgress
 } from '@mui/material';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faDownload, faFilePdf } from '@fortawesome/free-solid-svg-icons';
 
 const MuiViewerConsumption = () => {
   const packageLimit = 1000;
@@ -47,48 +43,9 @@ const MuiViewerConsumption = () => {
     <Card sx={{ borderRadius: 3, boxShadow: '0 2px 8px rgba(0,0,0,0.08)' }}>
       <CardContent sx={{ p: 3 }}>
         {/* Header */}
-        <Box sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', mb: 3 }}>
-          <Typography variant="h6" sx={{ fontWeight: 600, color: '#25242E' }}>
-            Viewer Consumption
-          </Typography>
-          
-          <Box sx={{ display: 'flex', gap: 1 }}>
-            <Button
-              size="small"
-              variant="outlined"
-              startIcon={<FontAwesomeIcon icon={faFilePdf} />}
-              sx={{ 
-                textTransform: 'none',
-                fontSize: '0.75rem',
-                minWidth: 'auto',
-                px: 2,
-                py: 0.5,
-                borderColor: '#E0E0E0',
-                color: '#747474',
-                '&:hover': { borderColor: '#43BEAC', color: '#43BEAC' }
-              }}
-            >
-              Export as PDF
-            </Button>
-            <Button
-              size="small"
-              variant="outlined"
-              startIcon={<FontAwesomeIcon icon={faDownload} />}
-              sx={{ 
-                textTransform: 'none',
-                fontSize: '0.75rem',
-                minWidth: 'auto',
-                px: 2,
-                py: 0.5,
-                borderColor: '#E0E0E0',
-                color: '#747474',
-                '&:hover': { borderColor: '#43BEAC', color: '#43BEAC' }
-              }}
-            >
-              Export as CSV
-            </Button>
-          </Box>
-        </Box>
+        <Typography variant="h6" sx={{ fontWeight: 600, color: '#25242E', mb: 3 }}>
+          Viewer Consumption
+        </Typography>
 
         {/* Key Metrics Grid */}
         <Box sx={{ 
@@ -102,10 +59,12 @@ const MuiViewerConsumption = () => {
               <Typography 
                 variant="body2" 
                 sx={{ 
-                  color: '#747474', 
+                  color: '#AEAEAE', 
                   fontSize: '0.75rem',
                   fontWeight: 500,
-                  mb: 0.5
+                  mb: 0.5,
+                  textTransform: 'uppercase',
+                  letterSpacing: '0.5px'
                 }}
               >
                 {metric.title}
@@ -115,8 +74,8 @@ const MuiViewerConsumption = () => {
                 sx={{ 
                   fontWeight: 700,
                   color: index === 3 && overage > 0 ? '#D32F2F' : '#25242E',
-                  fontSize: '2rem',
-                  lineHeight: 1,
+                  fontSize: '1.875rem',
+                  lineHeight: 1.1,
                   mb: 0.5
                 }}
               >
@@ -125,61 +84,39 @@ const MuiViewerConsumption = () => {
               <Typography 
                 variant="caption" 
                 sx={{ 
-                  color: '#AEAEAE',
-                  fontSize: '0.65rem'
+                  color: '#747474',
+                  fontSize: '0.6875rem'
                 }}
               >
                 {metric.subtitle}
               </Typography>
-              {/* Progress bar for each metric */}
-              <Box sx={{ mt: 1 }}>
-                <LinearProgress
-                  variant="determinate"
-                  value={index === 0 ? 100 : index === 1 ? Math.min(usagePercentage, 100) : index === 2 ? Math.min((overage / packageLimit) * 100, 100) : 100}
-                  sx={{
-                    height: 4,
-                    borderRadius: 2,
-                    backgroundColor: '#F5F5F5',
-                    '& .MuiLinearProgress-bar': {
-                      backgroundColor: index === 0 ? '#43BEAC' : 
-                                     index === 1 ? (currentUsage > packageLimit ? '#D32F2F' : '#43BEAC') :
-                                     index === 2 ? '#D32F2F' : '#FF8E03',
-                      borderRadius: 2,
-                    },
-                  }}
-                />
-              </Box>
             </Box>
           ))}
         </Box>
 
-        <Divider sx={{ my: 2 }} />
-
-        {/* Usage Overview */}
+        {/* Usage Progress Bar */}
         <Box sx={{ mb: 2 }}>
-          <Typography variant="body2" sx={{ color: '#747474', mb: 1, fontSize: '0.75rem' }}>
+          <Typography variant="body2" sx={{ color: '#747474', mb: 1.5, fontSize: '0.75rem', fontWeight: 500 }}>
             Usage Overview
           </Typography>
-          <Box sx={{ mb: 1 }}>
-            <LinearProgress
-              variant="determinate"
-              value={Math.min(usagePercentage, 100)}
-              sx={{
-                height: 8,
+          <LinearProgress
+            variant="determinate"
+            value={Math.min(usagePercentage, 100)}
+            sx={{
+              height: 8,
+              borderRadius: 4,
+              backgroundColor: '#F5F5F5',
+              '& .MuiLinearProgress-bar': {
+                backgroundColor: overage > 0 ? '#D32F2F' : '#43BEAC',
                 borderRadius: 4,
-                backgroundColor: '#F5F5F5',
-                '& .MuiLinearProgress-bar': {
-                  backgroundColor: overage > 0 ? '#D32F2F' : '#43BEAC',
-                  borderRadius: 4,
-                },
-              }}
-            />
-          </Box>
-          <Box sx={{ display: 'flex', justifyContent: 'space-between' }}>
-            <Typography variant="caption" sx={{ color: '#AEAEAE', fontSize: '0.65rem' }}>
+              },
+            }}
+          />
+          <Box sx={{ display: 'flex', justifyContent: 'space-between', mt: 1 }}>
+            <Typography variant="caption" sx={{ color: '#AEAEAE', fontSize: '0.625rem' }}>
               0
             </Typography>
-            <Typography variant="caption" sx={{ color: '#AEAEAE', fontSize: '0.65rem' }}>
+            <Typography variant="caption" sx={{ color: '#AEAEAE', fontSize: '0.625rem' }}>
               {packageLimit.toLocaleString()} (Limit)
             </Typography>
           </Box>
@@ -190,7 +127,7 @@ const MuiViewerConsumption = () => {
           <Box sx={{ 
             p: 1.5,
             backgroundColor: '#FFF3E0',
-            borderRadius: 1,
+            borderRadius: 2,
             border: '1px solid #FFE0B2'
           }}>
             <Typography variant="body2" sx={{ color: '#E65100', fontSize: '0.75rem', fontWeight: 500 }}>
