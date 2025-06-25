@@ -4,7 +4,8 @@ import { ThemeProvider, CssBaseline, Container, Box } from '@mui/material';
 import { muiTheme } from '@/theme/muiTheme';
 import MuiDashboardHeader from '@/components/dashboard/mui/MuiDashboardHeader';
 import MuiStatsCards from '@/components/dashboard/mui/MuiStatsCards';
-import MuiViewerDistribution from '@/components/dashboard/mui/MuiViewerDistribution';
+import MuiViewerConsumption from '@/components/dashboard/mui/MuiViewerConsumption';
+import MuiViewerTrends from '@/components/dashboard/mui/MuiViewerTrends';
 import MuiMonthlyOverview from '@/components/dashboard/mui/MuiMonthlyOverview';
 
 const Index = () => {
@@ -24,12 +25,14 @@ const Index = () => {
             
             <Box sx={{ 
               display: 'grid', 
-              gridTemplateColumns: { xs: '1fr', lg: '1fr 2fr' },
+              gridTemplateColumns: { xs: '1fr', lg: '1fr 1fr' },
               gap: 3 
             }}>
-              <MuiViewerDistribution />
+              <MuiViewerConsumption />
               <MuiStatsCards />
             </Box>
+
+            <MuiViewerTrends />
             
             <MuiMonthlyOverview />
           </Box>
