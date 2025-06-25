@@ -1,4 +1,3 @@
-
 import React from 'react';
 import { 
   Card, 
@@ -16,7 +15,7 @@ import {
   faExclamationTriangle, 
   faDownload, 
   faEye,
-  faPackage,
+  faBox,
   faEuroSign
 } from '@fortawesome/free-solid-svg-icons';
 
@@ -77,7 +76,7 @@ const MuiViewerConsumption = () => {
         {/* Paketinformationen */}
         <Box sx={{ mb: 3 }}>
           <Box sx={{ display: 'flex', alignItems: 'center', gap: 2, mb: 2 }}>
-            <FontAwesomeIcon icon={faPackage} style={{ color: '#43BEAC' }} />
+            <FontAwesomeIcon icon={faBox} style={{ color: '#43BEAC' }} />
             <Typography variant="body1" sx={{ fontWeight: 600, color: '#25242E' }}>
               Ihr Paket: {packageLimit.toLocaleString()} Viewer inklusive
             </Typography>
