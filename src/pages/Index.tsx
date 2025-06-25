@@ -3,9 +3,7 @@ import React from 'react';
 import { ThemeProvider, CssBaseline, Container, Box } from '@mui/material';
 import { muiTheme } from '@/theme/muiTheme';
 import MuiDashboardHeader from '@/components/dashboard/mui/MuiDashboardHeader';
-import MuiStatsCards from '@/components/dashboard/mui/MuiStatsCards';
 import MuiViewerConsumption from '@/components/dashboard/mui/MuiViewerConsumption';
-import MuiViewerTrends from '@/components/dashboard/mui/MuiViewerTrends';
 import MuiMonthlyOverview from '@/components/dashboard/mui/MuiMonthlyOverview';
 import MuiViewerDistribution from '@/components/dashboard/mui/MuiViewerDistribution';
 
@@ -33,12 +31,6 @@ const Index = () => {
               <MuiViewerConsumption />
               <MuiViewerDistribution />
             </Box>
-
-            {/* Secondary Stats */}
-            <MuiStatsCards />
-
-            {/* Charts Section */}
-            <MuiViewerTrends />
             
             {/* Table Section */}
             <MuiMonthlyOverview />

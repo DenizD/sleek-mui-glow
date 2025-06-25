@@ -29,8 +29,6 @@ const MuiMonthlyOverview = () => {
       totalViewers: 2540,
       viewersShows: 1800,
       viewersClips: 740,
-      showsStreamed: 8,
-      clipsUploaded: 5,
       status: "Überschritten um 1.540",
       statusColor: "error" as const,
       statusValue: 254,
@@ -41,8 +39,6 @@ const MuiMonthlyOverview = () => {
       totalViewers: 1890,
       viewersShows: 1350,
       viewersClips: 540,
-      showsStreamed: 7,
-      clipsUploaded: 6,
       status: "Überschritten um 890",
       statusColor: "error" as const,
       statusValue: 189,
@@ -53,8 +49,6 @@ const MuiMonthlyOverview = () => {
       totalViewers: 1380,
       viewersShows: 980,
       viewersClips: 400,
-      showsStreamed: 6,
-      clipsUploaded: 4,
       status: "Überschritten um 380",
       statusColor: "warning" as const,
       statusValue: 138,
@@ -65,8 +59,6 @@ const MuiMonthlyOverview = () => {
       totalViewers: 1150,
       viewersShows: 820,
       viewersClips: 330,
-      showsStreamed: 5,
-      clipsUploaded: 3,
       status: "Überschritten um 150",
       statusColor: "warning" as const,
       statusValue: 115,
@@ -77,9 +69,7 @@ const MuiMonthlyOverview = () => {
       totalViewers: 920,
       viewersShows: 650,
       viewersClips: 270,
-      showsStreamed: 4,
-      clipsUploaded: 3,
-      status: "Innerhalb Limit",
+      status: "Innerhalb Volumen",
       statusColor: "success" as const,
       statusValue: 92,
       bgColor: '#F0FDF4'
@@ -89,9 +79,7 @@ const MuiMonthlyOverview = () => {
       totalViewers: 850,
       viewersShows: 600,
       viewersClips: 250,
-      showsStreamed: 4,
-      clipsUploaded: 2,
-      status: "Innerhalb Limit",
+      status: "Innerhalb Volumen",
       statusColor: "success" as const,
       statusValue: 85,
       bgColor: '#F0FDF4'
@@ -199,26 +187,6 @@ const MuiMonthlyOverview = () => {
                   Viewer (Clips)
                 </TableCell>
                 <TableCell align="right" sx={{ fontWeight: 600, color: '#25242E', fontFamily: 'Inter, sans-serif' }}>
-                  <Box sx={{ display: 'flex', alignItems: 'center', justifyContent: 'flex-end', gap: 1 }}>
-                    Shows gestreamt
-                    <Tooltip title="Sortieren">
-                      <IconButton 
-                        size="small" 
-                        onClick={() => handleSort('showsStreamed')}
-                        sx={{ p: 0.5 }}
-                      >
-                        <FontAwesomeIcon 
-                          icon={getSortIcon('showsStreamed')} 
-                          style={{ fontSize: '12px', color: '#64748B' }} 
-                        />
-                      </IconButton>
-                    </Tooltip>
-                  </Box>
-                </TableCell>
-                <TableCell align="right" sx={{ fontWeight: 600, color: '#25242E', fontFamily: 'Inter, sans-serif' }}>
-                  Clips hochgeladen
-                </TableCell>
-                <TableCell align="right" sx={{ fontWeight: 600, color: '#25242E', fontFamily: 'Inter, sans-serif' }}>
                   Status
                 </TableCell>
               </TableRow>
@@ -249,7 +217,7 @@ const MuiMonthlyOverview = () => {
                         {row.totalViewers.toLocaleString()}
                       </Typography>
                       <Typography variant="caption" sx={{ color: '#64748B', fontSize: '0.75rem' }}>
-                        {row.statusValue}% des Limits
+                        {row.statusValue}% des Volumens
                       </Typography>
                     </Box>
                   </TableCell>
@@ -258,12 +226,6 @@ const MuiMonthlyOverview = () => {
                   </TableCell>
                   <TableCell align="right" sx={{ color: '#747474', fontFamily: 'Inter, sans-serif' }}>
                     {row.viewersClips.toLocaleString()}
-                  </TableCell>
-                  <TableCell align="right" sx={{ color: '#747474', fontFamily: 'Inter, sans-serif' }}>
-                    {row.showsStreamed}
-                  </TableCell>
-                  <TableCell align="right" sx={{ color: '#747474', fontFamily: 'Inter, sans-serif' }}>
-                    {row.clipsUploaded}
                   </TableCell>
                   <TableCell align="right">
                     <Chip 

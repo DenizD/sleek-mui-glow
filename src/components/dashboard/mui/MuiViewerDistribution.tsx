@@ -12,8 +12,8 @@ const data = [
 
 const MuiViewerDistribution = () => {
   const totalViewers = 2540;
-  const limitExceeded = 1540;
-  const usagePercentage = 254; // 2540/1000 * 100
+  const volumeExceeded = 1540;
+  const usagePercentage = 254;
 
   return (
     <Card sx={{ height: 'fit-content', borderRadius: 3 }}>
@@ -101,7 +101,7 @@ const MuiViewerDistribution = () => {
                 fontWeight: 600
               }}
             >
-              {usagePercentage}% des Limits
+              {usagePercentage}% des Volumens
             </Typography>
           </Box>
         </Box>
@@ -207,7 +207,7 @@ const MuiViewerDistribution = () => {
                   mb: 1
                 }}
               >
-                Limit um {limitExceeded.toLocaleString()} Viewer überschritten
+                Volumen um {volumeExceeded.toLocaleString()} Viewer überschritten
               </Typography>
               <Typography 
                 variant="caption" 

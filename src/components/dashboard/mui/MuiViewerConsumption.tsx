@@ -13,18 +13,18 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faExclamationTriangle, faInfoCircle } from '@fortawesome/free-solid-svg-icons';
 
 const MuiViewerConsumption = () => {
-  const packageLimit = 1000;
+  const packageVolume = 1000;
   const currentUsage = 2540;
-  const overage = Math.max(0, currentUsage - packageLimit);
+  const overage = Math.max(0, currentUsage - packageVolume);
   const costPerViewer = 0.10;
   const additionalCosts = overage * costPerViewer;
-  const usagePercentage = (currentUsage / packageLimit) * 100;
-  const percentageOfLimit = Math.round(usagePercentage);
+  const usagePercentage = (currentUsage / packageVolume) * 100;
+  const percentageOfVolume = Math.round(usagePercentage);
 
   const metrics = [
     {
-      title: "Paket-Limit",
-      value: packageLimit.toLocaleString(),
+      title: "Inklusiv-Volumen",
+      value: packageVolume.toLocaleString(),
       subtitle: "enthaltene Viewer",
       isHighlight: false,
       tooltip: "Die Anzahl der Viewer, die in Ihrem aktuellen Paket inbegriffen sind"
@@ -32,7 +32,7 @@ const MuiViewerConsumption = () => {
     {
       title: "Aktueller Verbrauch", 
       value: currentUsage.toLocaleString(),
-      subtitle: `${percentageOfLimit}% des Limits`,
+      subtitle: `${percentageOfVolume}% des Volumens`,
       isHighlight: false,
       tooltip: "Ihr bisheriger Viewer-Verbrauch in diesem Monat"
     },
@@ -41,7 +41,7 @@ const MuiViewerConsumption = () => {
       value: overage.toLocaleString(),
       subtitle: "zusätzliche Viewer",
       isHighlight: overage > 0,
-      tooltip: "Viewer, die über Ihr Paket-Limit hinausgehen"
+      tooltip: "Viewer, die über Ihr Paket-Volumen hinausgehen"
     },
     {
       title: "Zusatzkosten",
@@ -53,15 +53,15 @@ const MuiViewerConsumption = () => {
   ];
 
   const getStatusColor = () => {
-    if (usagePercentage >= 100) return '#DC2626'; // Rot
-    if (usagePercentage >= 80) return '#F59E0B'; // Orange
-    return '#10B981'; // Grün
+    if (usagePercentage >= 100) return '#DC2626';
+    if (usagePercentage >= 80) return '#F59E0B';
+    return '#10B981';
   };
 
   const getStatusText = () => {
-    if (usagePercentage >= 100) return 'Limit überschritten';
-    if (usagePercentage >= 80) return 'Kurz vor Limit';
-    return 'Innerhalb des Limits';
+    if (usagePercentage >= 100) return 'Volumen überschritten';
+    if (usagePercentage >= 80) return 'Kurz vor Volumen-Ende';
+    return 'Innerhalb des Volumens';
   };
 
   return (
@@ -211,7 +211,7 @@ const MuiViewerConsumption = () => {
                 0
               </Typography>
               <Typography variant="caption" sx={{ color: '#9CA3AF', fontSize: '0.75rem' }}>
-                {packageLimit.toLocaleString()} Viewer
+                {packageVolume.toLocaleString()} Viewer
               </Typography>
             </Box>
           </Box>
@@ -245,7 +245,7 @@ const MuiViewerConsumption = () => {
                       mb: 1
                     }}
                   >
-                    Paket-Limit überschritten — Zusatzkosten fallen an
+                    Inklusiv-Volumen überschritten — Zusatzkosten fallen an
                   </Typography>
                   <Typography 
                     variant="caption" 
