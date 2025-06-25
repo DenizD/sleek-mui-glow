@@ -1,4 +1,5 @@
-import React from 'react';
+
+import React, { useState } from 'react';
 import { 
   Card, 
   CardContent, 
@@ -8,18 +9,56 @@ import {
   Tooltip,
   Chip,
   Alert,
-  Button
+  Button,
+  Switch,
+  FormControlLabel
 } from '@mui/material';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faInfoCircle, faCheckCircle, faArrowUp, faCrown } from '@fortawesome/free-solid-svg-icons';
+import { faInfoCircle, faCheckCircle, faExclamationTriangle, faCrown } from '@fortawesome/free-solid-svg-icons';
 
 const MuiViewerConsumption = () => {
+  const [isExceededScenario, setIsExceededScenario] = useState(false);
+
+  // Scenario data
+  const scenarioData = {
+    withinLimits: {
+      currentUsage: 750,
+      usagePercentage: 75,
+      alertType: 'success' as const,
+      alertIcon: faCheckCircle,
+      alertTitle: 'Within inclusive volume: 250 viewers remaining',
+      alertDescription: 'You are currently using 750 of your 1,000 inclusive viewers. No additional charges apply.',
+      alertColors: {
+        backgroundColor: '#F0FDF4',
+        borderColor: '#BBF7D0',
+        color: '#166534',
+        iconColor: '#10B981'
+      }
+    },
+    exceeded: {
+      currentUsage: 1250,
+      usagePercentage: 125,
+      alertType: 'warning' as const,
+      alertIcon: faExclamationTriangle,
+      alertTitle: 'Inclusive volume exceeded: Usage-based pricing active',
+      alertDescription: 'You have used 1,250 viewers this month. 250 additional viewers beyond your inclusive volume will be charged at €0.10 per viewer.',
+      alertColors: {
+        backgroundColor: '#FFFBEB',
+        borderColor: '#FED7AA',
+        color: '#92400E',
+        iconColor: '#F59E0B'
+      }
+    }
+  };
+
+  const currentScenario = isExceededScenario ? scenarioData.exceeded : scenarioData.withinLimits;
+
   const planDetails = {
     name: "Starter Plan",
     inclusiveViewers: 1000,
     pricePerViewer: 0.10,
-    currentUsage: 750, // Changed to show within inclusive volume
-    usagePercentage: 75  // 75% of inclusive volume used
+    currentUsage: currentScenario.currentUsage,
+    usagePercentage: currentScenario.usagePercentage
   };
 
   const packageVolume = planDetails.inclusiveViewers;
@@ -31,7 +70,7 @@ const MuiViewerConsumption = () => {
   // Calculate remaining inclusive viewers or overage
   const remainingInclusive = Math.max(0, packageVolume - currentUsage);
   const usedInclusive = Math.min(currentUsage, packageVolume);
-  const inclusiveUsagePercentage = (usedInclusive / packageVolume) * 100;
+  const inclusiveUsagePercentage = Math.min((usedInclusive / packageVolume) * 100, 100);
 
   const getPlanBadgeColor = () => {
     switch (planDetails.name) {
@@ -85,11 +124,35 @@ const MuiViewerConsumption = () => {
       sx={{ 
         backgroundColor: '#FFFFFF',
         border: '1px solid #E8EAF0',
-        borderRadius: '16px',
+        borderRadius: '20px',
         overflow: 'hidden',
-        position: 'relative'
+        position: 'relative',
+        minHeight: '600px'
       }}
     >
+      {/* Scenario Switcher */}
+      <Box sx={{
+        position: 'absolute',
+        top: 16,
+        left: 16,
+        zIndex: 2
+      }}>
+        <FormControlLabel
+          control={
+            <Switch
+              checked={isExceededScenario}
+              onChange={(e) => setIsExceededScenario(e.target.checked)}
+              size="small"
+            />
+          }
+          label={
+            <Typography variant="caption" sx={{ fontSize: '0.75rem', color: '#64748B' }}>
+              {isExceededScenario ? 'Exceeded Scenario' : 'Within Limits'}
+            </Typography>
+          }
+        />
+      </Box>
+
       {/* Premium Badge */}
       <Box sx={{
         position: 'absolute',
@@ -106,7 +169,7 @@ const MuiViewerConsumption = () => {
             border: `1px solid ${badgeColors.border}`,
             fontWeight: 600,
             fontSize: '0.75rem',
-            height: '28px'
+            height: '32px'
           }}
         />
       </Box>
@@ -114,32 +177,32 @@ const MuiViewerConsumption = () => {
       <CardContent sx={{ p: 0 }}>
         {/* Header */}
         <Box sx={{ 
-          px: 4, 
-          pt: 4, 
-          pb: 3,
+          px: 5, 
+          pt: 5, 
+          pb: 4,
           background: 'linear-gradient(135deg, #F8FAFC 0%, #F1F5F9 100%)',
           borderBottom: '1px solid #E2E8F0'
         }}>
           <Box sx={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
             <Box>
               <Typography 
-                variant="h5" 
+                variant="h4" 
                 sx={{ 
                   fontWeight: 700, 
                   color: '#1A1A1A',
-                  fontSize: '1.5rem',
+                  fontSize: '2rem',
                   letterSpacing: '-0.02em',
                   fontFamily: 'Inter, sans-serif',
-                  mb: 0.5
+                  mb: 1
                 }}
               >
                 Plan & Viewer Consumption
               </Typography>
               <Typography 
-                variant="body2" 
+                variant="body1" 
                 sx={{ 
                   color: '#64748B',
-                  fontSize: '0.875rem',
+                  fontSize: '1rem',
                   fontFamily: 'Inter, sans-serif'
                 }}
               >
@@ -150,41 +213,45 @@ const MuiViewerConsumption = () => {
         </Box>
 
         {/* Metrics Grid */}
-        <Box sx={{ px: 4, py: 4 }}>
+        <Box sx={{ px: 5, py: 5 }}>
           <Box sx={{ 
             display: 'grid', 
             gridTemplateColumns: 'repeat(4, 1fr)', 
-            gap: 3,
-            mb: 4
+            gap: 4,
+            mb: 5
           }}>
             {metrics.map((metric, index) => (
               <Tooltip key={index} title={metric.tooltip} placement="top">
                 <Box sx={{ 
                   textAlign: 'center',
-                  p: 3,
-                  borderRadius: 3,
+                  p: 4,
+                  borderRadius: 4,
                   backgroundColor: '#F8FAFC',
                   border: '1px solid #E2E8F0',
                   cursor: 'pointer',
                   transition: 'all 0.2s ease',
+                  minHeight: '140px',
+                  display: 'flex',
+                  flexDirection: 'column',
+                  justifyContent: 'center',
                   '&:hover': {
-                    transform: 'translateY(-3px)',
-                    boxShadow: '0 8px 25px #64748B10'
+                    transform: 'translateY(-4px)',
+                    boxShadow: '0 12px 30px #64748B15'
                   }
                 }}>
                   <Box sx={{ display: 'flex', alignItems: 'center', justifyContent: 'center', gap: 1, mb: 2 }}>
                     <FontAwesomeIcon 
                       icon={metric.icon} 
                       style={{ 
-                        fontSize: '16px', 
+                        fontSize: '18px', 
                         color: metric.iconColor
                       }} 
                     />
                     <Typography 
-                      variant="body2" 
+                      variant="body1" 
                       sx={{ 
                         color: '#64748B',
-                        fontSize: '0.875rem',
+                        fontSize: '1rem',
                         fontWeight: 600,
                         textTransform: 'none'
                       }}
@@ -193,23 +260,23 @@ const MuiViewerConsumption = () => {
                     </Typography>
                   </Box>
                   <Typography 
-                    variant="h3" 
+                    variant="h2" 
                     sx={{ 
                       fontWeight: 800,
                       color: '#1A1A1A',
-                      fontSize: index === 0 ? '1.5rem' : '2.5rem',
+                      fontSize: index === 0 ? '1.75rem' : '3rem',
                       lineHeight: 1,
-                      mb: 1,
+                      mb: 1.5,
                       letterSpacing: '-0.03em'
                     }}
                   >
                     {metric.value}
                   </Typography>
                   <Typography 
-                    variant="caption" 
+                    variant="body2" 
                     sx={{ 
                       color: '#9CA3AF',
-                      fontSize: '0.75rem',
+                      fontSize: '0.875rem',
                       fontWeight: 500
                     }}
                   >
@@ -222,11 +289,11 @@ const MuiViewerConsumption = () => {
 
           {/* Inclusive Volume Progress */}
           <Typography 
-            variant="body1" 
+            variant="h6" 
             sx={{ 
               color: '#1A1A1A', 
-              mb: 3, 
-              fontSize: '1rem', 
+              mb: 4, 
+              fontSize: '1.25rem', 
               fontWeight: 600,
               fontFamily: 'Inter, sans-serif'
             }}
@@ -234,50 +301,68 @@ const MuiViewerConsumption = () => {
             Inclusive Volume Usage
           </Typography>
           
-          <Box sx={{ position: 'relative', mb: 3 }}>
+          <Box sx={{ position: 'relative', mb: 4 }}>
             <LinearProgress
               variant="determinate"
               value={inclusiveUsagePercentage}
               sx={{
-                height: 12,
-                borderRadius: 6,
+                height: 16,
+                borderRadius: 8,
                 backgroundColor: '#F3F4F6',
                 '& .MuiLinearProgress-bar': {
-                  borderRadius: 6,
-                  background: 'linear-gradient(90deg, #3890C5 0%, #43BEAC 100%)',
+                  borderRadius: 8,
+                  background: inclusiveUsagePercentage >= 100 
+                    ? 'linear-gradient(90deg, #F59E0B 0%, #D97706 100%)'
+                    : 'linear-gradient(90deg, #3890C5 0%, #43BEAC 100%)',
                 },
               }}
             />
+            <Typography
+              variant="body2"
+              sx={{
+                position: 'absolute',
+                top: '50%',
+                left: '50%',
+                transform: 'translate(-50%, -50%)',
+                color: 'white',
+                fontWeight: 600,
+                fontSize: '0.75rem',
+                textShadow: '0 1px 2px rgba(0,0,0,0.5)'
+              }}
+            >
+              {Math.round(inclusiveUsagePercentage)}%
+            </Typography>
           </Box>
 
-          <Box sx={{ display: 'flex', justifyContent: 'space-between', mb: 3 }}>
-            <Typography variant="caption" sx={{ color: '#9CA3AF', fontSize: '0.75rem' }}>
+          <Box sx={{ display: 'flex', justifyContent: 'space-between', mb: 4 }}>
+            <Typography variant="body2" sx={{ color: '#9CA3AF', fontSize: '0.875rem' }}>
               0 Viewers
             </Typography>
-            <Typography variant="caption" sx={{ color: '#9CA3AF', fontSize: '0.75rem' }}>
+            <Typography variant="body2" sx={{ color: '#9CA3AF', fontSize: '0.875rem' }}>
               {packageVolume.toLocaleString()} Viewers (Inclusive Max)
             </Typography>
           </Box>
 
-          {/* Status Information - Now showing success state */}
+          {/* Status Information */}
           <Alert 
-            severity="success" 
-            icon={<FontAwesomeIcon icon={faCheckCircle} />}
+            severity={currentScenario.alertType}
+            icon={<FontAwesomeIcon icon={currentScenario.alertIcon} />}
             sx={{ 
-              backgroundColor: '#F0FDF4',
-              borderColor: '#BBF7D0',
-              color: '#166534',
+              backgroundColor: currentScenario.alertColors.backgroundColor,
+              borderColor: currentScenario.alertColors.borderColor,
+              color: currentScenario.alertColors.color,
+              padding: '16px 20px',
+              borderRadius: '12px',
               '& .MuiAlert-icon': {
-                color: '#10B981'
+                color: currentScenario.alertColors.iconColor
               }
             }}
           >
-            <Typography variant="body2" sx={{ fontWeight: 600, mb: 0.5 }}>
-              Within inclusive volume: {remainingInclusive.toLocaleString()} viewers remaining
+            <Typography variant="body1" sx={{ fontWeight: 600, mb: 1, fontSize: '1rem' }}>
+              {currentScenario.alertTitle}
             </Typography>
-            <Typography variant="caption" sx={{ fontSize: '0.75rem' }}>
-              You're currently using {usedInclusive.toLocaleString()} of your {packageVolume.toLocaleString()} inclusive viewers. 
-              No additional charges apply.
+            <Typography variant="body2" sx={{ fontSize: '0.875rem', lineHeight: 1.5 }}>
+              {currentScenario.alertDescription}
             </Typography>
           </Alert>
         </Box>
