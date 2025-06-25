@@ -1,3 +1,4 @@
+
 import React from 'react';
 import { 
   Card, 
@@ -7,15 +8,16 @@ import {
   Alert, 
   Button,
   LinearProgress,
-  Chip,
-  Divider
+  Divider,
+  Table,
+  TableBody,
+  TableCell,
+  TableRow
 } from '@mui/material';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { 
   faExclamationTriangle, 
   faDownload, 
-  faEye,
-  faBox,
   faEuroSign
 } from '@fortawesome/free-solid-svg-icons';
 
@@ -26,7 +28,6 @@ const MuiViewerConsumption = () => {
   const costPerExtraViewer = 0.10; // 10 Cent pro zusätzlichem Viewer
   const additionalCosts = overage * costPerExtraViewer;
   const usagePercentage = Math.min((currentUsage / packageLimit) * 100, 100);
-  const overagePercentage = Math.max(0, ((currentUsage - packageLimit) / packageLimit) * 100);
 
   const handleExportPDF = () => {
     console.log('Export als PDF');
@@ -50,7 +51,7 @@ const MuiViewerConsumption = () => {
               fontFamily: 'Inter, sans-serif'
             }}
           >
-            Viewer-Verbrauch Details
+            Viewer-Verbrauch
           </Typography>
           <Box sx={{ display: 'flex', gap: 1 }}>
             <Button
@@ -58,7 +59,7 @@ const MuiViewerConsumption = () => {
               variant="outlined"
               onClick={handleExportPDF}
               startIcon={<FontAwesomeIcon icon={faDownload} />}
-              sx={{ textTransform: 'none' }}
+              sx={{ textTransform: 'none', fontSize: '0.75rem' }}
             >
               PDF
             </Button>
@@ -66,88 +67,100 @@ const MuiViewerConsumption = () => {
               size="small"
               variant="outlined"
               onClick={handleExportCSV}
-              sx={{ textTransform: 'none' }}
+              sx={{ textTransform: 'none', fontSize: '0.75rem' }}
             >
               CSV
             </Button>
           </Box>
         </Box>
 
-        {/* Paketinformationen */}
+        {/* Kompakte Verbrauchsübersicht */}
         <Box sx={{ mb: 3 }}>
-          <Box sx={{ display: 'flex', alignItems: 'center', gap: 2, mb: 2 }}>
-            <FontAwesomeIcon icon={faBox} style={{ color: '#43BEAC' }} />
-            <Typography variant="body1" sx={{ fontWeight: 600, color: '#25242E' }}>
-              Ihr Paket: {packageLimit.toLocaleString()} Viewer inklusive
-            </Typography>
-          </Box>
-          
-          <Box sx={{ display: 'flex', alignItems: 'center', gap: 2, mb: 1 }}>
-            <FontAwesomeIcon icon={faEye} style={{ color: '#3890C5' }} />
-            <Typography variant="body1" sx={{ color: '#25242E' }}>
-              Aktuell genutzt: <strong>{currentUsage.toLocaleString()} Viewer</strong>
-            </Typography>
-          </Box>
-          
-          {overage > 0 && (
-            <Box sx={{ display: 'flex', alignItems: 'center', gap: 2, mb: 1 }}>
-              <FontAwesomeIcon icon={faExclamationTriangle} style={{ color: '#FF8E03' }} />
-              <Typography variant="body1" sx={{ color: '#FF8E03', fontWeight: 600 }}>
-                Über das Limit: {overage.toLocaleString()} Viewer
-              </Typography>
-            </Box>
-          )}
-          
-          {additionalCosts > 0 && (
-            <Box sx={{ display: 'flex', alignItems: 'center', gap: 2 }}>
-              <FontAwesomeIcon icon={faEuroSign} style={{ color: '#D32F2F' }} />
-              <Typography variant="body1" sx={{ color: '#D32F2F', fontWeight: 600 }}>
-                Zusätzliche Kosten: {additionalCosts.toFixed(2)} €
-              </Typography>
-            </Box>
-          )}
+          <Table size="small" sx={{ '& .MuiTableCell-root': { border: 'none', py: 1, px: 0 } }}>
+            <TableBody>
+              <TableRow>
+                <TableCell sx={{ fontWeight: 500, color: '#25242E', width: '40%' }}>
+                  Inklusivvolumen:
+                </TableCell>
+                <TableCell sx={{ fontWeight: 600, color: '#25242E' }}>
+                  {packageLimit.toLocaleString()} Viewer
+                </TableCell>
+              </TableRow>
+              <TableRow>
+                <TableCell sx={{ fontWeight: 500, color: '#25242E' }}>
+                  Aktueller Verbrauch:
+                </TableCell>
+                <TableCell sx={{ fontWeight: 600, color: '#3890C5' }}>
+                  {currentUsage.toLocaleString()} Viewer
+                </TableCell>
+              </TableRow>
+              {overage > 0 && (
+                <TableRow>
+                  <TableCell sx={{ fontWeight: 500, color: '#25242E' }}>
+                    Über Limit:
+                  </TableCell>
+                  <TableCell sx={{ fontWeight: 600, color: '#FF8E03' }}>
+                    {overage.toLocaleString()} Viewer
+                  </TableCell>
+                </TableRow>
+              )}
+              {additionalCosts > 0 && (
+                <TableRow>
+                  <TableCell sx={{ fontWeight: 500, color: '#25242E' }}>
+                    Zusatzkosten:
+                  </TableCell>
+                  <TableCell sx={{ fontWeight: 600, color: '#D32F2F', display: 'flex', alignItems: 'center', gap: 1 }}>
+                    <FontAwesomeIcon icon={faEuroSign} size="sm" />
+                    {additionalCosts.toFixed(2)} €
+                  </TableCell>
+                </TableRow>
+              )}
+            </TableBody>
+          </Table>
         </Box>
 
-        {/* Fortschrittsbalken */}
+        {/* Fortschrittsbalken mit zwei Zonen */}
         <Box sx={{ mb: 3 }}>
           <Box sx={{ display: 'flex', justifyContent: 'space-between', mb: 1 }}>
-            <Typography variant="body2" sx={{ color: '#747474' }}>
-              Verbrauch Visualisierung
+            <Typography variant="body2" sx={{ color: '#747474', fontSize: '0.75rem' }}>
+              Verbrauchsvisualisierung
             </Typography>
-            <Typography variant="body2" sx={{ color: '#747474' }}>
-              {usagePercentage.toFixed(1)}% des Inklusivvolumens
+            <Typography variant="body2" sx={{ color: '#747474', fontSize: '0.75rem' }}>
+              {usagePercentage.toFixed(0)}%
             </Typography>
           </Box>
           
           <Box sx={{ position: 'relative' }}>
+            {/* Basis-Fortschrittsbalken (Inklusivvolumen) */}
             <LinearProgress
               variant="determinate"
               value={Math.min(usagePercentage, 100)}
               sx={{
-                height: 12,
-                borderRadius: 6,
+                height: 8,
+                borderRadius: 4,
                 backgroundColor: '#E0E0E0',
                 '& .MuiLinearProgress-bar': {
-                  backgroundColor: usagePercentage <= 100 ? '#43BEAC' : '#FF8E03',
-                  borderRadius: 6,
+                  backgroundColor: '#43BEAC',
+                  borderRadius: 4,
                 },
               }}
             />
-            {overagePercentage > 0 && (
+            {/* Überverbrauch-Balken */}
+            {overage > 0 && (
               <LinearProgress
                 variant="determinate"
-                value={Math.min(overagePercentage, 100)}
+                value={Math.min((overage / packageLimit) * 100, 100)}
                 sx={{
                   position: 'absolute',
                   top: 0,
                   left: 0,
                   right: 0,
-                  height: 12,
-                  borderRadius: 6,
+                  height: 8,
+                  borderRadius: 4,
                   backgroundColor: 'transparent',
                   '& .MuiLinearProgress-bar': {
                     backgroundColor: '#D32F2F',
-                    borderRadius: 6,
+                    borderRadius: 4,
                     marginLeft: '100%',
                   },
                 }}
@@ -155,44 +168,17 @@ const MuiViewerConsumption = () => {
             )}
           </Box>
           
-          <Box sx={{ display: 'flex', justifyContent: 'space-between', mt: 1 }}>
-            <Typography variant="caption" sx={{ color: '#747474' }}>
-              0 Viewer
+          <Box sx={{ display: 'flex', justifyContent: 'space-between', mt: 0.5 }}>
+            <Typography variant="caption" sx={{ color: '#747474', fontSize: '0.7rem' }}>
+              Inklusivvolumen (grün)
             </Typography>
-            <Typography variant="caption" sx={{ color: '#747474' }}>
-              {packageLimit.toLocaleString()} Viewer (Limit)
-            </Typography>
-            <Typography variant="caption" sx={{ color: '#D32F2F' }}>
-              {currentUsage.toLocaleString()} Viewer
+            <Typography variant="caption" sx={{ color: '#747474', fontSize: '0.7rem' }}>
+              Überverbrauch (rot)
             </Typography>
           </Box>
         </Box>
 
-        {/* Status Chips */}
-        <Box sx={{ display: 'flex', gap: 1, mb: 3, flexWrap: 'wrap' }}>
-          <Chip
-            label={`${packageLimit.toLocaleString()} inklusive`}
-            color="primary"
-            size="small"
-            sx={{ fontFamily: 'Inter, sans-serif' }}
-          />
-          <Chip
-            label={`${currentUsage.toLocaleString()} genutzt`}
-            color="info"
-            size="small"
-            sx={{ fontFamily: 'Inter, sans-serif' }}
-          />
-          {overage > 0 && (
-            <Chip
-              label={`${overage.toLocaleString()} Überverbrauch`}
-              color="warning"
-              size="small"
-              sx={{ fontFamily: 'Inter, sans-serif' }}
-            />
-          )}
-        </Box>
-
-        {/* Warnhinweise */}
+        {/* Kompakte Statusmeldung nur bei Bedarf */}
         {overage > 0 && (
           <Alert 
             severity="warning" 
@@ -200,64 +186,64 @@ const MuiViewerConsumption = () => {
             sx={{ 
               borderRadius: 2,
               mb: 2,
+              py: 1,
               '& .MuiAlert-message': {
                 fontFamily: 'Inter, sans-serif',
-                fontSize: '0.875rem'
+                fontSize: '0.8rem'
               }
             }}
           >
-            Sie haben Ihr Paketvolumen um {overage.toLocaleString()} Viewer überschritten. 
-            Zusätzliche Kosten von {additionalCosts.toFixed(2)} € entstehen.
+            Limit überschritten: {additionalCosts.toFixed(2)} € Zusatzkosten
           </Alert>
         )}
 
-        {currentUsage >= packageLimit * 0.8 && currentUsage < packageLimit && (
+        {currentUsage >= packageLimit * 0.9 && currentUsage < packageLimit && (
           <Alert 
             severity="info"
             sx={{ 
               borderRadius: 2,
+              py: 1,
               '& .MuiAlert-message': {
                 fontFamily: 'Inter, sans-serif',
-                fontSize: '0.875rem'
+                fontSize: '0.8rem'
               }
             }}
           >
-            Sie haben bereits {usagePercentage.toFixed(1)}% Ihres Paketvolumens verbraucht. 
-            Noch {(packageLimit - currentUsage).toLocaleString()} Viewer verfügbar.
+            {usagePercentage.toFixed(0)}% des Volumens verbraucht
           </Alert>
         )}
 
         <Divider sx={{ my: 2 }} />
 
-        {/* Kostenaufschlüsselung */}
+        {/* Kompakte Kostenaufschlüsselung */}
         <Box>
-          <Typography variant="body2" sx={{ fontWeight: 600, color: '#25242E', mb: 1 }}>
-            Kostenaufschlüsselung:
+          <Typography variant="body2" sx={{ fontWeight: 600, color: '#25242E', mb: 1, fontSize: '0.875rem' }}>
+            Kostenübersicht:
           </Typography>
           <Box sx={{ display: 'flex', justifyContent: 'space-between', mb: 0.5 }}>
-            <Typography variant="body2" sx={{ color: '#747474' }}>
+            <Typography variant="body2" sx={{ color: '#747474', fontSize: '0.8rem' }}>
               Paketpreis (inkl. {packageLimit.toLocaleString()} Viewer)
             </Typography>
-            <Typography variant="body2" sx={{ color: '#25242E' }}>
+            <Typography variant="body2" sx={{ color: '#25242E', fontSize: '0.8rem' }}>
               Im Abo enthalten
             </Typography>
           </Box>
           {overage > 0 && (
             <Box sx={{ display: 'flex', justifyContent: 'space-between', mb: 0.5 }}>
-              <Typography variant="body2" sx={{ color: '#747474' }}>
-                Zusätzliche Viewer ({overage.toLocaleString()} × {costPerExtraViewer.toFixed(2)} €)
+              <Typography variant="body2" sx={{ color: '#747474', fontSize: '0.8rem' }}>
+                Zusätzlich ({overage.toLocaleString()} × {costPerExtraViewer.toFixed(2)} €)
               </Typography>
-              <Typography variant="body2" sx={{ color: '#D32F2F', fontWeight: 600 }}>
+              <Typography variant="body2" sx={{ color: '#D32F2F', fontWeight: 600, fontSize: '0.8rem' }}>
                 {additionalCosts.toFixed(2)} €
               </Typography>
             </Box>
           )}
           <Divider sx={{ my: 1 }} />
           <Box sx={{ display: 'flex', justifyContent: 'space-between' }}>
-            <Typography variant="body1" sx={{ fontWeight: 600, color: '#25242E' }}>
-              Zusätzliche Kosten gesamt:
+            <Typography variant="body1" sx={{ fontWeight: 600, color: '#25242E', fontSize: '0.9rem' }}>
+              Zusatzkosten gesamt:
             </Typography>
-            <Typography variant="body1" sx={{ fontWeight: 600, color: additionalCosts > 0 ? '#D32F2F' : '#43BEAC' }}>
+            <Typography variant="body1" sx={{ fontWeight: 600, color: additionalCosts > 0 ? '#D32F2F' : '#43BEAC', fontSize: '0.9rem' }}>
               {additionalCosts.toFixed(2)} €
             </Typography>
           </Box>
