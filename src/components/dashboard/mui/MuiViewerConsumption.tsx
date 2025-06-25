@@ -1,4 +1,3 @@
-
 import React from 'react';
 import { 
   Card, 
@@ -19,8 +18,8 @@ const MuiViewerConsumption = () => {
     name: "Starter Plan",
     inclusiveViewers: 1000,
     pricePerViewer: 0.10,
-    currentUsage: 2540,
-    usagePercentage: 254
+    currentUsage: 750, // Changed to show within inclusive volume
+    usagePercentage: 75  // 75% of inclusive volume used
   };
 
   const packageVolume = planDetails.inclusiveViewers;
@@ -245,9 +244,7 @@ const MuiViewerConsumption = () => {
                 backgroundColor: '#F3F4F6',
                 '& .MuiLinearProgress-bar': {
                   borderRadius: 6,
-                  background: inclusiveUsagePercentage >= 100 
-                    ? 'linear-gradient(90deg, #FF8E03 0%, #FF6B35 100%)' 
-                    : 'linear-gradient(90deg, #3890C5 0%, #43BEAC 100%)',
+                  background: 'linear-gradient(90deg, #3890C5 0%, #43BEAC 100%)',
                 },
               }}
             />
@@ -262,78 +259,27 @@ const MuiViewerConsumption = () => {
             </Typography>
           </Box>
 
-          {/* Status Information */}
-          {overage > 0 ? (
-            <Box sx={{ display: 'flex', flexDirection: 'column', gap: 3 }}>
-              <Alert 
-                severity="warning" 
-                icon={<FontAwesomeIcon icon={faInfoCircle} />}
-                sx={{ 
-                  backgroundColor: '#FFF7ED',
-                  borderColor: '#FED7AA',
-                  color: '#C2410C',
-                  '& .MuiAlert-icon': {
-                    color: '#FF8E03'
-                  }
-                }}
-              >
-                <Typography variant="body2" sx={{ fontWeight: 600, mb: 0.5 }}>
-                  Usage-based pricing active: {overage.toLocaleString()} additional viewers
-                </Typography>
-                <Typography variant="caption" sx={{ fontSize: '0.75rem' }}>
-                  Your inclusive volume has been exceeded. Additional viewers are charged at €{costPerViewer.toFixed(2)} per viewer. 
-                  Total additional costs: €{additionalCosts.toFixed(2)}
-                </Typography>
-              </Alert>
-
-              <Box sx={{ display: 'flex', justifyContent: 'center' }}>
-                <Button
-                  variant="contained"
-                  startIcon={<FontAwesomeIcon icon={faArrowUp} />}
-                  sx={{
-                    backgroundColor: '#43BEAC',
-                    color: 'white',
-                    fontWeight: 600,
-                    px: 4,
-                    py: 1.5,
-                    borderRadius: 2,
-                    textTransform: 'none',
-                    fontSize: '0.875rem',
-                    boxShadow: '0 2px 4px rgba(67, 190, 172, 0.2)',
-                    transition: 'all 0.2s ease',
-                    '&:hover': {
-                      backgroundColor: '#30A390',
-                      transform: 'translateY(-1px)',
-                      boxShadow: '0 4px 8px rgba(67, 190, 172, 0.3)'
-                    }
-                  }}
-                >
-                  Upgrade Plan
-                </Button>
-              </Box>
-            </Box>
-          ) : (
-            <Alert 
-              severity="success" 
-              icon={<FontAwesomeIcon icon={faCheckCircle} />}
-              sx={{ 
-                backgroundColor: '#F0FDF4',
-                borderColor: '#BBF7D0',
-                color: '#166534',
-                '& .MuiAlert-icon': {
-                  color: '#10B981'
-                }
-              }}
-            >
-              <Typography variant="body2" sx={{ fontWeight: 600, mb: 0.5 }}>
-                Within inclusive volume: {remainingInclusive.toLocaleString()} viewers remaining
-              </Typography>
-              <Typography variant="caption" sx={{ fontSize: '0.75rem' }}>
-                You're currently using {usedInclusive.toLocaleString()} of your {packageVolume.toLocaleString()} inclusive viewers. 
-                No additional charges apply.
-              </Typography>
-            </Alert>
-          )}
+          {/* Status Information - Now showing success state */}
+          <Alert 
+            severity="success" 
+            icon={<FontAwesomeIcon icon={faCheckCircle} />}
+            sx={{ 
+              backgroundColor: '#F0FDF4',
+              borderColor: '#BBF7D0',
+              color: '#166534',
+              '& .MuiAlert-icon': {
+                color: '#10B981'
+              }
+            }}
+          >
+            <Typography variant="body2" sx={{ fontWeight: 600, mb: 0.5 }}>
+              Within inclusive volume: {remainingInclusive.toLocaleString()} viewers remaining
+            </Typography>
+            <Typography variant="caption" sx={{ fontSize: '0.75rem' }}>
+              You're currently using {usedInclusive.toLocaleString()} of your {packageVolume.toLocaleString()} inclusive viewers. 
+              No additional charges apply.
+            </Typography>
+          </Alert>
         </Box>
       </CardContent>
     </Card>
