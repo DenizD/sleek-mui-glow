@@ -25,21 +25,21 @@ const MuiMonthlyOverview = () => {
 
   const data = [
     {
-      month: "Juni 2025",
+      month: "June 2025",
       totalViewers: 2540,
       viewersShows: 1800,
       viewersClips: 740,
-      status: "Überschritten um 1.540",
+      status: "Exceeded by 1,540",
       statusColor: "error" as const,
       statusValue: 254,
       bgColor: '#FEF2F2'
     },
     {
-      month: "Mai 2025", 
+      month: "May 2025", 
       totalViewers: 1890,
       viewersShows: 1350,
       viewersClips: 540,
-      status: "Überschritten um 890",
+      status: "Exceeded by 890",
       statusColor: "error" as const,
       statusValue: 189,
       bgColor: '#FEF2F2'
@@ -49,37 +49,37 @@ const MuiMonthlyOverview = () => {
       totalViewers: 1380,
       viewersShows: 980,
       viewersClips: 400,
-      status: "Überschritten um 380",
+      status: "Exceeded by 380",
       statusColor: "warning" as const,
       statusValue: 138,
       bgColor: '#FEF3C7'
     },
     {
-      month: "März 2025",
+      month: "March 2025",
       totalViewers: 1150,
       viewersShows: 820,
       viewersClips: 330,
-      status: "Überschritten um 150",
+      status: "Exceeded by 150",
       statusColor: "warning" as const,
       statusValue: 115,
       bgColor: '#FEF3C7'
     },
     {
-      month: "Februar 2025",
+      month: "February 2025",
       totalViewers: 920,
       viewersShows: 650,
       viewersClips: 270,
-      status: "Innerhalb Volumen",
+      status: "Within volume",
       statusColor: "success" as const,
       statusValue: 92,
       bgColor: '#F0FDF4'
     },
     {
-      month: "Januar 2025",
+      month: "January 2025",
       totalViewers: 850,
       viewersShows: 600,
       viewersClips: 250,
-      status: "Innerhalb Volumen",
+      status: "Within volume",
       statusColor: "success" as const,
       statusValue: 85,
       bgColor: '#F0FDF4'
@@ -137,7 +137,7 @@ const MuiMonthlyOverview = () => {
               fontFamily: 'Inter, sans-serif'
             }}
           >
-            Monatsübersicht
+            Monthly Overview
           </Typography>
         </Box>
       </Box>
@@ -148,8 +148,8 @@ const MuiMonthlyOverview = () => {
               <TableRow sx={{ backgroundColor: '#F8FAFC' }}>
                 <TableCell sx={{ fontWeight: 600, color: '#25242E', fontFamily: 'Inter, sans-serif' }}>
                   <Box sx={{ display: 'flex', alignItems: 'center', gap: 1 }}>
-                    Monat
-                    <Tooltip title="Sortieren">
+                    Month
+                    <Tooltip title="Sort">
                       <IconButton 
                         size="small" 
                         onClick={() => handleSort('month')}
@@ -165,8 +165,8 @@ const MuiMonthlyOverview = () => {
                 </TableCell>
                 <TableCell align="right" sx={{ fontWeight: 600, color: '#25242E', fontFamily: 'Inter, sans-serif' }}>
                   <Box sx={{ display: 'flex', alignItems: 'center', justifyContent: 'flex-end', gap: 1 }}>
-                    Gesamt-Viewer
-                    <Tooltip title="Sortieren">
+                    Total Viewers
+                    <Tooltip title="Sort">
                       <IconButton 
                         size="small" 
                         onClick={() => handleSort('totalViewers')}
@@ -181,10 +181,10 @@ const MuiMonthlyOverview = () => {
                   </Box>
                 </TableCell>
                 <TableCell align="right" sx={{ fontWeight: 600, color: '#25242E', fontFamily: 'Inter, sans-serif' }}>
-                  Viewer (Shows)
+                  Viewers (Shows)
                 </TableCell>
                 <TableCell align="right" sx={{ fontWeight: 600, color: '#25242E', fontFamily: 'Inter, sans-serif' }}>
-                  Viewer (Clips)
+                  Viewers (Clips)
                 </TableCell>
                 <TableCell align="right" sx={{ fontWeight: 600, color: '#25242E', fontFamily: 'Inter, sans-serif' }}>
                   Status
@@ -217,7 +217,7 @@ const MuiMonthlyOverview = () => {
                         {row.totalViewers.toLocaleString()}
                       </Typography>
                       <Typography variant="caption" sx={{ color: '#64748B', fontSize: '0.75rem' }}>
-                        {row.statusValue}% des Volumens
+                        {row.statusValue}% of volume
                       </Typography>
                     </Box>
                   </TableCell>

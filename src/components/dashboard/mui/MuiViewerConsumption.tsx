@@ -44,34 +44,34 @@ const MuiViewerConsumption = () => {
 
   const metrics = [
     {
-      title: "Aktueller Tarif",
+      title: "Current Plan",
       value: planDetails.name,
-      subtitle: "gebuchtes Paket",
-      tooltip: "Ihr aktuell gebuchter Tarif",
+      subtitle: "subscribed package",
+      tooltip: "Your currently subscribed plan",
       icon: faCrown,
       iconColor: badgeColors.color
     },
     {
-      title: "Inklusiv-Viewer",
+      title: "Inclusive Viewers",
       value: packageVolume.toLocaleString(),
-      subtitle: "pro Monat enthalten",
-      tooltip: "Die Anzahl der Viewer, die in Ihrem aktuellen Paket inbegriffen sind",
+      subtitle: "included per month",
+      tooltip: "The number of viewers included in your current package",
       icon: faCheckCircle,
       iconColor: '#10B981'
     },
     {
-      title: "Aktueller Verbrauch", 
+      title: "Current Usage", 
       value: currentUsage.toLocaleString(),
-      subtitle: `${percentageOfVolume}% des Volumens`,
-      tooltip: "Ihr bisheriger Viewer-Verbrauch in diesem Monat",
+      subtitle: `${percentageOfVolume}% of volume`,
+      tooltip: "Your current viewer usage this month",
       icon: faInfoCircle,
       iconColor: '#3890C5'
     },
     {
-      title: "Zusatzkosten",
+      title: "Additional Costs",
       value: `€${additionalCosts.toFixed(2)}`,
-      subtitle: `€${costPerViewer.toFixed(2)}/Viewer`,
-      tooltip: "Kosten für zusätzliche Viewer - werden automatisch über Ihre Zahlungsmethode abgerechnet",
+      subtitle: `€${costPerViewer.toFixed(2)}/viewer`,
+      tooltip: "Costs for additional viewers - automatically charged via your payment method",
       icon: faInfoCircle,
       iconColor: '#3890C5'
     }
@@ -131,7 +131,7 @@ const MuiViewerConsumption = () => {
                   mb: 0.5
                 }}
               >
-                Tarif & Viewer-Verbrauch
+                Plan & Viewer Consumption
               </Typography>
               <Typography 
                 variant="body2" 
@@ -141,7 +141,7 @@ const MuiViewerConsumption = () => {
                   fontFamily: 'Inter, sans-serif'
                 }}
               >
-                Übersicht über Ihren Tarif und monatlichen Verbrauch
+                Overview of your plan and monthly consumption
               </Typography>
             </Box>
           </Box>
@@ -229,7 +229,7 @@ const MuiViewerConsumption = () => {
               fontFamily: 'Inter, sans-serif'
             }}
           >
-            Verbrauchsfortschritt
+            Usage Progress
           </Typography>
           
           <Box sx={{ position: 'relative', mb: 3 }}>
@@ -270,19 +270,19 @@ const MuiViewerConsumption = () => {
                 whiteSpace: 'nowrap'
               }}
             >
-              Inklusiv-Maximum
+              Inclusive Maximum
             </Typography>
           </Box>
 
           <Box sx={{ display: 'flex', justifyContent: 'space-between', mb: 3 }}>
             <Typography variant="caption" sx={{ color: '#9CA3AF', fontSize: '0.75rem' }}>
-              0 Viewer
+              0 Viewers
             </Typography>
             <Typography variant="caption" sx={{ color: '#9CA3AF', fontSize: '0.75rem' }}>
-              {packageVolume.toLocaleString()} Viewer
+              {packageVolume.toLocaleString()} Viewers
             </Typography>
             <Typography variant="caption" sx={{ color: '#3890C5', fontSize: '0.75rem', fontWeight: 600 }}>
-              {currentUsage.toLocaleString()} Viewer (aktuell)
+              {currentUsage.toLocaleString()} Viewers (current)
             </Typography>
           </Box>
 
@@ -302,12 +302,12 @@ const MuiViewerConsumption = () => {
                 }}
               >
                 <Typography variant="body2" sx={{ fontWeight: 600, mb: 0.5 }}>
-                  Zusätzliche Viewer-Kosten von €{additionalCosts.toFixed(2)}
+                  Additional viewer costs of €{additionalCosts.toFixed(2)}
                 </Typography>
                 <Typography variant="caption" sx={{ fontSize: '0.75rem' }}>
-                  Die Kosten für zusätzliche Viewer werden automatisch über Ihre hinterlegte 
-                  Zahlungsmethode abgerechnet. Ein Upgrade zu einem größeren Plan könnte 
-                  bei Ihrem Verbrauch langfristig günstiger sein.
+                  The costs for additional viewers are automatically charged via your 
+                  stored payment method. An upgrade to a larger plan might be more 
+                  cost-effective for your usage level.
                 </Typography>
               </Alert>
 
@@ -333,7 +333,7 @@ const MuiViewerConsumption = () => {
                     }
                   }}
                 >
-                  Plan upgraden
+                  Upgrade Plan
                 </Button>
               </Box>
             </Box>

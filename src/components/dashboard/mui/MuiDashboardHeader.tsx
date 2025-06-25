@@ -2,13 +2,18 @@
 import React from 'react';
 import { Box, Typography, FormControl, Select, MenuItem, Paper } from '@mui/material';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faTrophy } from '@fortawesome/free-solid-svg-icons';
+import { faTrophy, faGlobe } from '@fortawesome/free-solid-svg-icons';
 
 const MuiDashboardHeader = () => {
   const [selectedMonth, setSelectedMonth] = React.useState('june-2025');
+  const [selectedLanguage, setSelectedLanguage] = React.useState('en');
 
   const handleMonthChange = (event: any) => {
     setSelectedMonth(event.target.value);
+  };
+
+  const handleLanguageChange = (event: any) => {
+    setSelectedLanguage(event.target.value);
   };
 
   return (
@@ -40,27 +45,49 @@ const MuiDashboardHeader = () => {
         </Typography>
       </Box>
       
-      <Box sx={{ display: 'flex', alignItems: 'center', gap: 2 }}>
-        <Typography variant="body1" sx={{ fontWeight: 500, color: '#747474' }}>
-          Month
-        </Typography>
-        <FormControl size="small">
-          <Select
-            value={selectedMonth}
-            onChange={handleMonthChange}
-            sx={{
-              minWidth: 160,
-              backgroundColor: 'white',
-              '& .MuiOutlinedInput-notchedOutline': {
-                borderColor: '#E0E0E0',
-              },
-            }}
-          >
-            <MenuItem value="june-2025">June 2025</MenuItem>
-            <MenuItem value="may-2025">May 2025</MenuItem>
-            <MenuItem value="april-2025">April 2025</MenuItem>
-          </Select>
-        </FormControl>
+      <Box sx={{ display: 'flex', alignItems: 'center', gap: 3 }}>
+        <Box sx={{ display: 'flex', alignItems: 'center', gap: 2 }}>
+          <FontAwesomeIcon icon={faGlobe} style={{ color: '#747474', fontSize: '16px' }} />
+          <FormControl size="small">
+            <Select
+              value={selectedLanguage}
+              onChange={handleLanguageChange}
+              sx={{
+                minWidth: 100,
+                backgroundColor: 'white',
+                '& .MuiOutlinedInput-notchedOutline': {
+                  borderColor: '#E0E0E0',
+                },
+              }}
+            >
+              <MenuItem value="en">English</MenuItem>
+              <MenuItem value="de">Deutsch</MenuItem>
+            </Select>
+          </FormControl>
+        </Box>
+        
+        <Box sx={{ display: 'flex', alignItems: 'center', gap: 2 }}>
+          <Typography variant="body1" sx={{ fontWeight: 500, color: '#747474' }}>
+            Month
+          </Typography>
+          <FormControl size="small">
+            <Select
+              value={selectedMonth}
+              onChange={handleMonthChange}
+              sx={{
+                minWidth: 160,
+                backgroundColor: 'white',
+                '& .MuiOutlinedInput-notchedOutline': {
+                  borderColor: '#E0E0E0',
+                },
+              }}
+            >
+              <MenuItem value="june-2025">June 2025</MenuItem>
+              <MenuItem value="may-2025">May 2025</MenuItem>
+              <MenuItem value="april-2025">April 2025</MenuItem>
+            </Select>
+          </FormControl>
+        </Box>
       </Box>
     </Box>
   );
