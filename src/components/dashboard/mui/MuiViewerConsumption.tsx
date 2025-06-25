@@ -8,25 +8,53 @@ import {
   LinearProgress,
   Tooltip,
   Chip,
-  Alert
+  Alert,
+  Button
 } from '@mui/material';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faInfoCircle, faCheckCircle } from '@fortawesome/free-solid-svg-icons';
+import { faInfoCircle, faCheckCircle, faArrowUp, faCrown } from '@fortawesome/free-solid-svg-icons';
 
 const MuiViewerConsumption = () => {
-  const packageVolume = 1000;
-  const currentUsage = 2540;
+  const planDetails = {
+    name: "Starter Plan",
+    inclusiveViewers: 1000,
+    pricePerViewer: 0.10,
+    currentUsage: 2540,
+    usagePercentage: 254
+  };
+
+  const packageVolume = planDetails.inclusiveViewers;
+  const currentUsage = planDetails.currentUsage;
   const overage = Math.max(0, currentUsage - packageVolume);
-  const costPerViewer = 0.10;
+  const costPerViewer = planDetails.pricePerViewer;
   const additionalCosts = overage * costPerViewer;
   const usagePercentage = (currentUsage / packageVolume) * 100;
   const percentageOfVolume = Math.round(usagePercentage);
 
+  const getPlanBadgeColor = () => {
+    switch (planDetails.name) {
+      case "Starter Plan": return { bg: '#E3F2FD', color: '#1976D2', border: '#BBDEFB' };
+      case "Pro Plan": return { bg: '#F3E5F5', color: '#7B1FA2', border: '#CE93D8' };
+      case "Enterprise Plan": return { bg: '#FFF3E0', color: '#F57C00', border: '#FFCC02' };
+      default: return { bg: '#F5F5F5', color: '#666', border: '#E0E0E0' };
+    }
+  };
+
+  const badgeColors = getPlanBadgeColor();
+
   const metrics = [
     {
-      title: "Inklusiv-Volumen",
+      title: "Aktueller Tarif",
+      value: planDetails.name,
+      subtitle: "gebuchtes Paket",
+      tooltip: "Ihr aktuell gebuchter Tarif",
+      icon: faCrown,
+      iconColor: badgeColors.color
+    },
+    {
+      title: "Inklusiv-Viewer",
       value: packageVolume.toLocaleString(),
-      subtitle: "enthaltene Viewer",
+      subtitle: "pro Monat enthalten",
       tooltip: "Die Anzahl der Viewer, die in Ihrem aktuellen Paket inbegriffen sind",
       icon: faCheckCircle,
       iconColor: '#10B981'
@@ -40,14 +68,6 @@ const MuiViewerConsumption = () => {
       iconColor: '#3890C5'
     },
     {
-      title: "Zusätzliche Viewer",
-      value: overage.toLocaleString(),
-      subtitle: "über Inklusiv-Volumen",
-      tooltip: "Viewer, die über Ihr Paket-Volumen hinausgehen",
-      icon: faInfoCircle,
-      iconColor: '#3890C5'
-    },
-    {
       title: "Zusatzkosten",
       value: `€${additionalCosts.toFixed(2)}`,
       subtitle: `€${costPerViewer.toFixed(2)}/Viewer`,
@@ -57,12 +77,6 @@ const MuiViewerConsumption = () => {
     }
   ];
 
-  const getStatusText = () => {
-    if (usagePercentage >= 100) return 'Über Inklusiv-Volumen';
-    if (usagePercentage >= 80) return 'Nähert sich dem Volumen-Ende';
-    return 'Innerhalb des Inklusiv-Volumens';
-  };
-
   return (
     <Card 
       elevation={0}
@@ -70,9 +84,31 @@ const MuiViewerConsumption = () => {
         backgroundColor: '#FFFFFF',
         border: '1px solid #E8EAF0',
         borderRadius: '16px',
-        overflow: 'hidden'
+        overflow: 'hidden',
+        position: 'relative'
       }}
     >
+      {/* Premium Badge */}
+      <Box sx={{
+        position: 'absolute',
+        top: 16,
+        right: 16,
+        zIndex: 1
+      }}>
+        <Chip
+          icon={<FontAwesomeIcon icon={faCrown} style={{ fontSize: '12px' }} />}
+          label={planDetails.name}
+          sx={{
+            backgroundColor: badgeColors.bg,
+            color: badgeColors.color,
+            border: `1px solid ${badgeColors.border}`,
+            fontWeight: 600,
+            fontSize: '0.75rem',
+            height: '28px'
+          }}
+        />
+      </Box>
+
       <CardContent sx={{ p: 0 }}>
         {/* Header */}
         <Box sx={{ 
@@ -95,7 +131,7 @@ const MuiViewerConsumption = () => {
                   mb: 0.5
                 }}
               >
-                Viewer-Verbrauch
+                Tarif & Viewer-Verbrauch
               </Typography>
               <Typography 
                 variant="body2" 
@@ -105,23 +141,9 @@ const MuiViewerConsumption = () => {
                   fontFamily: 'Inter, sans-serif'
                 }}
               >
-                Monatliche Übersicht und Kostenaufstellung
+                Übersicht über Ihren Tarif und monatlichen Verbrauch
               </Typography>
             </Box>
-            <Chip
-              icon={<FontAwesomeIcon icon={faInfoCircle} style={{ fontSize: '14px' }} />}
-              label={getStatusText()}
-              sx={{
-                backgroundColor: '#F0F9FF',
-                color: '#3890C5',
-                border: '1px solid #BAE6FD',
-                fontWeight: 600,
-                fontSize: '0.75rem',
-                px: 2,
-                py: 1,
-                height: 'auto'
-              }}
-            />
           </Box>
         </Box>
 
@@ -130,7 +152,8 @@ const MuiViewerConsumption = () => {
           <Box sx={{ 
             display: 'grid', 
             gridTemplateColumns: 'repeat(4, 1fr)', 
-            gap: 3
+            gap: 3,
+            mb: 4
           }}>
             {metrics.map((metric, index) => (
               <Tooltip key={index} title={metric.tooltip} placement="top">
@@ -172,7 +195,7 @@ const MuiViewerConsumption = () => {
                     sx={{ 
                       fontWeight: 800,
                       color: '#1A1A1A',
-                      fontSize: '2.5rem',
+                      fontSize: index === 0 ? '1.5rem' : '2.5rem',
                       lineHeight: 1,
                       mb: 1,
                       letterSpacing: '-0.03em'
@@ -194,10 +217,8 @@ const MuiViewerConsumption = () => {
               </Tooltip>
             ))}
           </Box>
-        </Box>
 
-        {/* Usage Progress */}
-        <Box sx={{ px: 4, pb: 4 }}>
+          {/* Usage Progress */}
           <Typography 
             variant="body1" 
             sx={{ 
@@ -249,7 +270,7 @@ const MuiViewerConsumption = () => {
                 whiteSpace: 'nowrap'
               }}
             >
-              Inklusiv-Volumen
+              Inklusiv-Maximum
             </Typography>
           </Box>
 
@@ -265,29 +286,57 @@ const MuiViewerConsumption = () => {
             </Typography>
           </Box>
 
-          {/* Information Alert */}
+          {/* Information Alert & Action Button */}
           {overage > 0 && (
-            <Alert 
-              severity="info" 
-              icon={<FontAwesomeIcon icon={faInfoCircle} />}
-              sx={{ 
-                backgroundColor: '#F0F9FF',
-                borderColor: '#BAE6FD',
-                color: '#0369A1',
-                '& .MuiAlert-icon': {
-                  color: '#0369A1'
-                }
-              }}
-            >
-              <Typography variant="body2" sx={{ fontWeight: 600, mb: 0.5 }}>
-                Zusätzliche Viewer-Kosten von €{additionalCosts.toFixed(2)}
-              </Typography>
-              <Typography variant="caption" sx={{ fontSize: '0.75rem' }}>
-                Die Kosten für zusätzliche Viewer werden automatisch über Ihre hinterlegte 
-                Zahlungsmethode abgerechnet. Ein Upgrade zu einem größeren Plan könnte 
-                bei Ihrem Verbrauch langfristig günstiger sein.
-              </Typography>
-            </Alert>
+            <Box sx={{ display: 'flex', flexDirection: 'column', gap: 3 }}>
+              <Alert 
+                severity="info" 
+                icon={<FontAwesomeIcon icon={faInfoCircle} />}
+                sx={{ 
+                  backgroundColor: '#F0F9FF',
+                  borderColor: '#BAE6FD',
+                  color: '#0369A1',
+                  '& .MuiAlert-icon': {
+                    color: '#0369A1'
+                  }
+                }}
+              >
+                <Typography variant="body2" sx={{ fontWeight: 600, mb: 0.5 }}>
+                  Zusätzliche Viewer-Kosten von €{additionalCosts.toFixed(2)}
+                </Typography>
+                <Typography variant="caption" sx={{ fontSize: '0.75rem' }}>
+                  Die Kosten für zusätzliche Viewer werden automatisch über Ihre hinterlegte 
+                  Zahlungsmethode abgerechnet. Ein Upgrade zu einem größeren Plan könnte 
+                  bei Ihrem Verbrauch langfristig günstiger sein.
+                </Typography>
+              </Alert>
+
+              <Box sx={{ display: 'flex', justifyContent: 'center' }}>
+                <Button
+                  variant="contained"
+                  startIcon={<FontAwesomeIcon icon={faArrowUp} />}
+                  sx={{
+                    backgroundColor: '#43BEAC',
+                    color: 'white',
+                    fontWeight: 600,
+                    px: 4,
+                    py: 1.5,
+                    borderRadius: 2,
+                    textTransform: 'none',
+                    fontSize: '0.875rem',
+                    boxShadow: '0 2px 4px rgba(67, 190, 172, 0.2)',
+                    transition: 'all 0.2s ease',
+                    '&:hover': {
+                      backgroundColor: '#30A390',
+                      transform: 'translateY(-1px)',
+                      boxShadow: '0 4px 8px rgba(67, 190, 172, 0.3)'
+                    }
+                  }}
+                >
+                  Plan upgraden
+                </Button>
+              </Box>
+            </Box>
           )}
         </Box>
       </CardContent>
