@@ -1,27 +1,41 @@
 
-import DashboardHeader from "@/components/dashboard/DashboardHeader";
-import ViewerDistribution from "@/components/dashboard/ViewerDistribution";
-import StatsCards from "@/components/dashboard/StatsCards";
-import MonthlyOverview from "@/components/dashboard/MonthlyOverview";
+import React from 'react';
+import { ThemeProvider, CssBaseline, Container, Box } from '@mui/material';
+import { muiTheme } from '@/theme/muiTheme';
+import MuiDashboardHeader from '@/components/dashboard/mui/MuiDashboardHeader';
+import MuiStatsCards from '@/components/dashboard/mui/MuiStatsCards';
+import MuiViewerDistribution from '@/components/dashboard/mui/MuiViewerDistribution';
+import MuiMonthlyOverview from '@/components/dashboard/mui/MuiMonthlyOverview';
 
 const Index = () => {
   return (
-    <div className="min-h-screen bg-gradient-to-br from-slate-50 to-slate-100 p-6">
-      <div className="max-w-7xl mx-auto space-y-8">
-        <DashboardHeader />
-        
-        <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
-          <div className="lg:col-span-1">
-            <ViewerDistribution />
-          </div>
-          <div className="lg:col-span-2">
-            <StatsCards />
-          </div>
-        </div>
-        
-        <MonthlyOverview />
-      </div>
-    </div>
+    <ThemeProvider theme={muiTheme}>
+      <CssBaseline />
+      <Box 
+        sx={{ 
+          minHeight: '100vh',
+          background: 'linear-gradient(135deg, #F5F5F5 0%, #E8E8E8 100%)',
+          py: 3
+        }}
+      >
+        <Container maxWidth="xl">
+          <Box sx={{ display: 'flex', flexDirection: 'column', gap: 3 }}>
+            <MuiDashboardHeader />
+            
+            <Box sx={{ 
+              display: 'grid', 
+              gridTemplateColumns: { xs: '1fr', lg: '1fr 2fr' },
+              gap: 3 
+            }}>
+              <MuiViewerDistribution />
+              <MuiStatsCards />
+            </Box>
+            
+            <MuiMonthlyOverview />
+          </Box>
+        </Container>
+      </Box>
+    </ThemeProvider>
   );
 };
 
