@@ -3,10 +3,10 @@ import React from 'react';
 import { Card, CardContent, Typography, Box, Button, Alert } from '@mui/material';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { 
-  faUpgrade, 
+  faArrowUp, 
   faFileInvoice, 
   faChartLine, 
-  faLightbulb,
+  faInfoCircle,
   faArrowRight 
 } from '@fortawesome/free-solid-svg-icons';
 
@@ -15,7 +15,7 @@ const MuiSelfServiceActions = () => {
     {
       title: "Plan upgraden",
       description: "Wechseln Sie zu einem höheren Plan für bessere Kosteneffizienz",
-      icon: faUpgrade,
+      icon: faArrowUp,
       color: '#43BEAC',
       bgColor: '#F0FDF4',
       borderColor: '#BBF7D0',
@@ -77,10 +77,10 @@ const MuiSelfServiceActions = () => {
           </Typography>
         </Box>
 
-        {/* Recommendation Alert */}
+        {/* Information Alert */}
         <Alert 
           severity="info" 
-          icon={<FontAwesomeIcon icon={faLightbulb} />}
+          icon={<FontAwesomeIcon icon={faInfoCircle} />}
           sx={{ 
             mb: 3,
             backgroundColor: '#F0F9FF',
@@ -92,11 +92,12 @@ const MuiSelfServiceActions = () => {
           }}
         >
           <Typography variant="body2" sx={{ fontWeight: 500, mb: 0.5 }}>
-            Empfehlung für bessere Kostenkontrolle
+            Automatische Abrechnung
           </Typography>
           <Typography variant="caption" sx={{ fontSize: '0.75rem' }}>
-            Bei Ihrem aktuellen Verbrauch von 254% könnte ein Upgrade zu einem höheren Plan 
-            langfristig kostengünstiger sein.
+            Zusätzliche Viewer-Kosten werden automatisch über Ihre hinterlegte 
+            Zahlungsmethode abgerechnet. Bei Ihrem aktuellen Verbrauch könnte 
+            ein Upgrade langfristig kostengünstiger sein.
           </Typography>
         </Alert>
 

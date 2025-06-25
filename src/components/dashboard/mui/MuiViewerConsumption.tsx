@@ -11,7 +11,7 @@ import {
   Alert
 } from '@mui/material';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faExclamationTriangle, faInfoCircle, faCheckCircle } from '@fortawesome/free-solid-svg-icons';
+import { faInfoCircle, faCheckCircle } from '@fortawesome/free-solid-svg-icons';
 
 const MuiViewerConsumption = () => {
   const packageVolume = 1000;
@@ -27,7 +27,6 @@ const MuiViewerConsumption = () => {
       title: "Inklusiv-Volumen",
       value: packageVolume.toLocaleString(),
       subtitle: "enthaltene Viewer",
-      isHighlight: false,
       tooltip: "Die Anzahl der Viewer, die in Ihrem aktuellen Paket inbegriffen sind",
       icon: faCheckCircle,
       iconColor: '#10B981'
@@ -36,47 +35,32 @@ const MuiViewerConsumption = () => {
       title: "Aktueller Verbrauch", 
       value: currentUsage.toLocaleString(),
       subtitle: `${percentageOfVolume}% des Volumens`,
-      isHighlight: false,
       tooltip: "Ihr bisheriger Viewer-Verbrauch in diesem Monat",
       icon: faInfoCircle,
       iconColor: '#3890C5'
     },
     {
-      title: "Mehrverbrauch",
+      title: "Zusätzliche Viewer",
       value: overage.toLocaleString(),
-      subtitle: "zusätzliche Viewer",
-      isHighlight: overage > 0,
+      subtitle: "über Inklusiv-Volumen",
       tooltip: "Viewer, die über Ihr Paket-Volumen hinausgehen",
-      icon: faExclamationTriangle,
-      iconColor: '#DC2626'
+      icon: faInfoCircle,
+      iconColor: '#3890C5'
     },
     {
       title: "Zusatzkosten",
       value: `€${additionalCosts.toFixed(2)}`,
       subtitle: `€${costPerViewer.toFixed(2)}/Viewer`,
-      isHighlight: overage > 0,
-      tooltip: "Kosten für den Mehrverbrauch basierend auf dem Pay-per-Use Modell",
-      icon: faExclamationTriangle,
-      iconColor: '#DC2626'
+      tooltip: "Kosten für zusätzliche Viewer - werden automatisch über Ihre Zahlungsmethode abgerechnet",
+      icon: faInfoCircle,
+      iconColor: '#3890C5'
     }
   ];
 
-  const getStatusColor = () => {
-    if (usagePercentage >= 100) return '#DC2626';
-    if (usagePercentage >= 80) return '#F59E0B';
-    return '#10B981';
-  };
-
   const getStatusText = () => {
-    if (usagePercentage >= 100) return 'Inklusiv-Volumen überschritten';
-    if (usagePercentage >= 80) return 'Kurz vor Volumen-Ende';
+    if (usagePercentage >= 100) return 'Über Inklusiv-Volumen';
+    if (usagePercentage >= 80) return 'Nähert sich dem Volumen-Ende';
     return 'Innerhalb des Inklusiv-Volumens';
-  };
-
-  const getStatusIcon = () => {
-    if (usagePercentage >= 100) return faExclamationTriangle;
-    if (usagePercentage >= 80) return faExclamationTriangle;
-    return faCheckCircle;
   };
 
   return (
@@ -90,20 +74,13 @@ const MuiViewerConsumption = () => {
       }}
     >
       <CardContent sx={{ p: 0 }}>
-        {/* Enhanced Header with Status */}
+        {/* Header */}
         <Box sx={{ 
           px: 4, 
           pt: 4, 
           pb: 3,
-          background: usagePercentage >= 100 
-            ? 'linear-gradient(135deg, #FEF2F2 0%, #FDE8E8 100%)'
-            : usagePercentage >= 80
-            ? 'linear-gradient(135deg, #FEF3C7 0%, #FDE68A 100%)'
-            : 'linear-gradient(135deg, #F0FDF4 0%, #DCFCE7 100%)',
-          borderBottom: `1px solid ${
-            usagePercentage >= 100 ? '#FECACA' : 
-            usagePercentage >= 80 ? '#FDE68A' : '#BBF7D0'
-          }`
+          background: 'linear-gradient(135deg, #F8FAFC 0%, #F1F5F9 100%)',
+          borderBottom: '1px solid #E2E8F0'
         }}>
           <Box sx={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
             <Box>
@@ -132,12 +109,12 @@ const MuiViewerConsumption = () => {
               </Typography>
             </Box>
             <Chip
-              icon={<FontAwesomeIcon icon={getStatusIcon()} style={{ fontSize: '14px' }} />}
+              icon={<FontAwesomeIcon icon={faInfoCircle} style={{ fontSize: '14px' }} />}
               label={getStatusText()}
               sx={{
-                backgroundColor: usagePercentage >= 100 ? '#FEF2F2' : usagePercentage >= 80 ? '#FEF3C7' : '#F0FDF4',
-                color: getStatusColor(),
-                border: `1px solid ${usagePercentage >= 100 ? '#FECACA' : usagePercentage >= 80 ? '#FDE68A' : '#BBF7D0'}`,
+                backgroundColor: '#F0F9FF',
+                color: '#3890C5',
+                border: '1px solid #BAE6FD',
                 fontWeight: 600,
                 fontSize: '0.75rem',
                 px: 2,
@@ -148,7 +125,7 @@ const MuiViewerConsumption = () => {
           </Box>
         </Box>
 
-        {/* Enhanced Metrics Grid */}
+        {/* Metrics Grid */}
         <Box sx={{ px: 4, py: 4 }}>
           <Box sx={{ 
             display: 'grid', 
@@ -161,13 +138,13 @@ const MuiViewerConsumption = () => {
                   textAlign: 'center',
                   p: 3,
                   borderRadius: 3,
-                  backgroundColor: metric.isHighlight ? '#FEF2F2' : '#F8FAFC',
-                  border: `1px solid ${metric.isHighlight ? '#FECACA' : '#E2E8F0'}`,
+                  backgroundColor: '#F8FAFC',
+                  border: '1px solid #E2E8F0',
                   cursor: 'pointer',
                   transition: 'all 0.2s ease',
                   '&:hover': {
                     transform: 'translateY(-3px)',
-                    boxShadow: `0 8px 25px ${metric.isHighlight ? '#DC262620' : '#64748B10'}`
+                    boxShadow: '0 8px 25px #64748B10'
                   }
                 }}>
                   <Box sx={{ display: 'flex', alignItems: 'center', justifyContent: 'center', gap: 1, mb: 2 }}>
@@ -194,7 +171,7 @@ const MuiViewerConsumption = () => {
                     variant="h3" 
                     sx={{ 
                       fontWeight: 800,
-                      color: metric.isHighlight ? '#DC2626' : '#1A1A1A',
+                      color: '#1A1A1A',
                       fontSize: '2.5rem',
                       lineHeight: 1,
                       mb: 1,
@@ -206,7 +183,7 @@ const MuiViewerConsumption = () => {
                   <Typography 
                     variant="caption" 
                     sx={{ 
-                      color: metric.isHighlight ? '#DC2626' : '#9CA3AF',
+                      color: '#9CA3AF',
                       fontSize: '0.75rem',
                       fontWeight: 500
                     }}
@@ -219,7 +196,7 @@ const MuiViewerConsumption = () => {
           </Box>
         </Box>
 
-        {/* Enhanced Usage Progress */}
+        {/* Usage Progress */}
         <Box sx={{ px: 4, pb: 4 }}>
           <Typography 
             variant="body1" 
@@ -244,11 +221,7 @@ const MuiViewerConsumption = () => {
                 backgroundColor: '#F3F4F6',
                 '& .MuiLinearProgress-bar': {
                   borderRadius: 6,
-                  background: usagePercentage >= 100 
-                    ? 'linear-gradient(90deg, #DC2626 0%, #B91C1C 100%)'
-                    : usagePercentage >= 80 
-                    ? 'linear-gradient(90deg, #F59E0B 0%, #D97706 100%)'
-                    : 'linear-gradient(90deg, #10B981 0%, #059669 100%)',
+                  background: 'linear-gradient(90deg, #3890C5 0%, #43BEAC 100%)',
                 },
               }}
             />
@@ -287,31 +260,32 @@ const MuiViewerConsumption = () => {
             <Typography variant="caption" sx={{ color: '#9CA3AF', fontSize: '0.75rem' }}>
               {packageVolume.toLocaleString()} Viewer
             </Typography>
-            <Typography variant="caption" sx={{ color: '#DC2626', fontSize: '0.75rem', fontWeight: 600 }}>
+            <Typography variant="caption" sx={{ color: '#3890C5', fontSize: '0.75rem', fontWeight: 600 }}>
               {currentUsage.toLocaleString()} Viewer (aktuell)
             </Typography>
           </Box>
 
-          {/* Enhanced Status Alert */}
+          {/* Information Alert */}
           {overage > 0 && (
             <Alert 
-              severity="error" 
-              icon={<FontAwesomeIcon icon={faExclamationTriangle} />}
+              severity="info" 
+              icon={<FontAwesomeIcon icon={faInfoCircle} />}
               sx={{ 
-                backgroundColor: '#FEF2F2',
-                borderColor: '#FECACA',
-                color: '#DC2626',
+                backgroundColor: '#F0F9FF',
+                borderColor: '#BAE6FD',
+                color: '#0369A1',
                 '& .MuiAlert-icon': {
-                  color: '#DC2626'
+                  color: '#0369A1'
                 }
               }}
             >
               <Typography variant="body2" sx={{ fontWeight: 600, mb: 0.5 }}>
-                Inklusiv-Volumen überschritten — Zusatzkosten von €{additionalCosts.toFixed(2)} fallen an
+                Zusätzliche Viewer-Kosten von €{additionalCosts.toFixed(2)}
               </Typography>
               <Typography variant="caption" sx={{ fontSize: '0.75rem' }}>
-                Erwägen Sie ein Upgrade zu einem größeren Paket für bessere Kosteneffizienz. 
-                Bei Ihrem Verbrauch könnte ein Pro-Plan langfristig günstiger sein.
+                Die Kosten für zusätzliche Viewer werden automatisch über Ihre hinterlegte 
+                Zahlungsmethode abgerechnet. Ein Upgrade zu einem größeren Plan könnte 
+                bei Ihrem Verbrauch langfristig günstiger sein.
               </Typography>
             </Alert>
           )}

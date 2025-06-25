@@ -5,7 +5,6 @@ import { muiTheme } from '@/theme/muiTheme';
 import MuiDashboardHeader from '@/components/dashboard/mui/MuiDashboardHeader';
 import MuiPlanOverview from '@/components/dashboard/mui/MuiPlanOverview';
 import MuiViewerConsumption from '@/components/dashboard/mui/MuiViewerConsumption';
-import MuiViewerDistribution from '@/components/dashboard/mui/MuiViewerDistribution';
 import MuiMonthlyOverview from '@/components/dashboard/mui/MuiMonthlyOverview';
 import MuiSelfServiceActions from '@/components/dashboard/mui/MuiSelfServiceActions';
 
@@ -34,18 +33,11 @@ const Index = () => {
               gap: 3 
             }}>
               <MuiViewerConsumption />
-              <MuiViewerDistribution />
-            </Box>
-            
-            {/* Bottom Grid */}
-            <Box sx={{ 
-              display: 'grid', 
-              gridTemplateColumns: { xs: '1fr', lg: '2fr 1fr' },
-              gap: 3 
-            }}>
-              <MuiMonthlyOverview />
               <MuiSelfServiceActions />
             </Box>
+            
+            {/* Monthly Overview */}
+            <MuiMonthlyOverview />
           </Box>
         </Container>
       </Box>

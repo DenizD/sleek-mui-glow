@@ -2,7 +2,7 @@
 import React from 'react';
 import { Card, CardContent, Typography, Box, Chip, Button, Tooltip } from '@mui/material';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faUpgrade, faInfoCircle, faCrown } from '@fortawesome/free-solid-svg-icons';
+import { faArrowUp, faInfoCircle, faCrown } from '@fortawesome/free-solid-svg-icons';
 
 const MuiPlanOverview = () => {
   const planDetails = {
@@ -195,12 +195,12 @@ const MuiPlanOverview = () => {
               textAlign: 'center',
               p: 2,
               borderRadius: 2,
-              backgroundColor: planDetails.usagePercentage > 100 ? '#FEF2F2' : '#F8FAFC',
-              border: `1px solid ${planDetails.usagePercentage > 100 ? '#FECACA' : '#E2E8F0'}`,
+              backgroundColor: '#F8FAFC',
+              border: '1px solid #E2E8F0',
               cursor: 'pointer',
               transition: 'all 0.2s ease',
               '&:hover': {
-                backgroundColor: planDetails.usagePercentage > 100 ? '#FEE2E2' : '#F1F5F9',
+                backgroundColor: '#F1F5F9',
                 transform: 'translateY(-2px)'
               }
             }}>
@@ -220,7 +220,7 @@ const MuiPlanOverview = () => {
                 variant="h4" 
                 sx={{ 
                   fontWeight: 700,
-                  color: planDetails.usagePercentage > 100 ? '#DC2626' : '#1A1A1A',
+                  color: '#1A1A1A',
                   fontSize: '1.75rem',
                   lineHeight: 1,
                   mb: 0.5
@@ -231,9 +231,8 @@ const MuiPlanOverview = () => {
               <Typography 
                 variant="caption" 
                 sx={{ 
-                  color: planDetails.usagePercentage > 100 ? '#DC2626' : '#64748B',
-                  fontSize: '0.75rem',
-                  fontWeight: planDetails.usagePercentage > 100 ? 600 : 400
+                  color: '#64748B',
+                  fontSize: '0.75rem'
                 }}
               >
                 des Volumens
@@ -252,7 +251,7 @@ const MuiPlanOverview = () => {
         }}>
           <Button
             variant="contained"
-            startIcon={<FontAwesomeIcon icon={faUpgrade} />}
+            startIcon={<FontAwesomeIcon icon={faArrowUp} />}
             sx={{
               backgroundColor: '#43BEAC',
               color: 'white',
