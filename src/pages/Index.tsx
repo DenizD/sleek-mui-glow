@@ -7,6 +7,7 @@ import MuiStatsCards from '@/components/dashboard/mui/MuiStatsCards';
 import MuiViewerConsumption from '@/components/dashboard/mui/MuiViewerConsumption';
 import MuiViewerTrends from '@/components/dashboard/mui/MuiViewerTrends';
 import MuiMonthlyOverview from '@/components/dashboard/mui/MuiMonthlyOverview';
+import MuiViewerDistribution from '@/components/dashboard/mui/MuiViewerDistribution';
 
 const Index = () => {
   return (
@@ -15,7 +16,7 @@ const Index = () => {
       <Box 
         sx={{ 
           minHeight: '100vh',
-          background: 'linear-gradient(135deg, #F5F5F5 0%, #E8E8E8 100%)',
+          background: 'linear-gradient(135deg, #F8FAFC 0%, #F1F5F9 100%)',
           py: 3
         }}
       >
@@ -23,17 +24,23 @@ const Index = () => {
           <Box sx={{ display: 'flex', flexDirection: 'column', gap: 3 }}>
             <MuiDashboardHeader />
             
+            {/* Main Content Grid */}
             <Box sx={{ 
               display: 'grid', 
-              gridTemplateColumns: { xs: '1fr', lg: '1fr 1fr' },
+              gridTemplateColumns: { xs: '1fr', lg: '2fr 1fr' },
               gap: 3 
             }}>
               <MuiViewerConsumption />
-              <MuiStatsCards />
+              <MuiViewerDistribution />
             </Box>
 
+            {/* Secondary Stats */}
+            <MuiStatsCards />
+
+            {/* Charts Section */}
             <MuiViewerTrends />
             
+            {/* Table Section */}
             <MuiMonthlyOverview />
           </Box>
         </Container>
